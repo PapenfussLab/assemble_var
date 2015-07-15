@@ -1,0 +1,86 @@
+REAPR version 1.0.17 README file
+
+
+_____________________________ INSTALLATION ___________________________________
+
+Prerequisites:
+ - R installed and in your path (http://www.r-project.org/)
+ - The following Perl modules need to be installed:
+    File::Basename
+    File::Copy
+    File::Spec
+    File::Spec::Link
+    Getopt::Long
+    List::Util
+
+
+To install REAPR, run
+
+  ./install.sh
+
+Note that (depending on your system) this could take quite a long time
+because there are several third-party tools that need to be compiled.
+Once it has finished, add ./reapr to your $PATH, or call it explicitly with
+/path/to/your/installation/directory/reapr
+
+Optionally, you might want to have Artemis installed
+(http://www.sanger.ac.uk/resources/software/artemis/) to view the output.
+It must be at least Artemis version 15.0.0.
+
+
+______________________________ RUN THE TEST __________________________________
+
+If you want to check the installation is ok, you can run a test of the
+whole REAPR pipeline.
+
+IMPORTANT: the test assumes that 'reapr' has been added to your $PATH.
+
+The test data are available as a separate download. These are solely to check
+that the installation runs, using a cut-down dataset. As such, the results
+are not the same as those that would be obtained when running on the full
+dataset. The data contains reads from the ENA (accession number SRR022865).
+The remainder of the test data is from the GAGE paper
+(Salzberg et al. 2011), using the Velvet assembly of S. aureus
+(see http://gage.cbcb.umd.edu/data/index.html).
+
+Download the test data tarball, unpack it and run the
+test script from inside the test directory:
+
+./test.sh
+
+
+____________________________ MAPPING READS ___________________________________
+
+SMALT (http://www.sanger.ac.uk/resources/software/smalt/) is recommended to
+map the reads. REAPR has been tested using versions 0.6.4 and 0.7.0.1 of
+SMALT, but we have noticed issues with writing a BAM file directly
+(with the SMALT option -f bam). Please use -f samsoft when running SMALT, then
+import to BAM with samtools or Picard.
+
+REAPR can map reads for you using SMALT - you can run 'reapr smaltmap' with
+the -x option to print a list of the mapping commands that REAPR would
+run to produce a BAM for input to the REAPR pipeline.
+
+
+________________________________ GET HELP ____________________________________
+
+Please read the manual: manual.pdf
+
+
+_______________________________ BRIEF USAGE __________________________________
+
+All REAPR tasks are run via a call to
+
+  reapr
+
+Call with no arguments for a list of tasks.  Call any task with no arguments
+to get the usage for that task.  To run the entire pipeline, run
+
+  reapr pipeline
+
+Full instructions can be found in the manual: manual.pdf.
+
+
+__________________________ BUG REPORTS/QUESTIONS/COMMENTS ____________________
+
+Please email Martin Hunt, mh12@sanger.ac.uk.

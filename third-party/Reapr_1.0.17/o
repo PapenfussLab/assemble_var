@@ -1,0 +1,122 @@
+[32mCPAN: Term::ANSIColor loaded ok (v3.00)[0m
+[32mCPAN: Storable loaded ok (v2.45)[0m
+[32mReading '/home/users/lab0605/keith/.cpan/Metadata'[0m
+[32m  Database was generated on Tue, 09 Dec 2014 12:17:02 GMT[0m
+[31mWarning: Cannot install conf, don't know what it is.
+Try the command
+
+    i /conf/
+
+to find objects with matching identifiers.[0m
+[31mWarning: Cannot install makepl_arg, don't know what it is.
+Try the command
+
+    i /makepl_arg/
+
+to find objects with matching identifiers.[0m
+[32mRunning make for I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32mCPAN: LWP::UserAgent loaded ok (v6.05)[0m
+[32mFetching with LWP:
+http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32mFetching with LWP:
+http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/.gz[0m
+[32m
+Trying with
+    /usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473"
+to get
+    http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32m
+    Function system("/usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473" "http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/" ")
+    returned status 8 (wstat 2048), left
+/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473 with size 0
+    [0m[31mWarning: no success downloading '/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473'. Giving up on it.[0m
+[32mFetching with LWP:
+http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32mFetching with LWP:
+http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/.gz[0m
+[32m
+Trying with
+    /usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473"
+to get
+    http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32m
+    Function system("/usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473" "http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/" ")
+    returned status 8 (wstat 2048), left
+/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473 with size 0
+    [0m[31mWarning: no success downloading '/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473'. Giving up on it.[0m
+[32m
+Trying with
+    /usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473"
+to get
+    http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32m
+    Function system("/usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473" "http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/" ")
+    returned status 8 (wstat 2048), left
+/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473 with size 0
+    [0m[32m
+Trying with
+    /usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473"
+to get
+    http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32m
+    Function system("/usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473" "http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/" ")
+    returned status 8 (wstat 2048), left
+/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473 with size 0
+    [0m[31mWarning: no success downloading '/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473'. Giving up on it.[0m
+[32mNo external ftp command available[0m
+
+[32mFetching with LWP:
+http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32mFetching with LWP:
+http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/.gz[0m
+[32m
+Trying with
+    /usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473"
+to get
+    http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32m
+    Function system("/usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473" "http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/" ")
+    returned status 8 (wstat 2048), left
+/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473 with size 0
+    [0m[31mWarning: no success downloading '/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473'. Giving up on it.[0m
+[32mFetching with LWP:
+http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32mFetching with LWP:
+http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/.gz[0m
+[32m
+Trying with
+    /usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473"
+to get
+    http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32m
+    Function system("/usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473" "http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/" ")
+    returned status 8 (wstat 2048), left
+/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473 with size 0
+    [0m[31mWarning: no success downloading '/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473'. Giving up on it.[0m
+[32m
+Trying with
+    /usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473"
+to get
+    http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32m
+    Function system("/usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473" "http://ppm.activestate.com/CPAN/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/" ")
+    returned status 8 (wstat 2048), left
+/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473 with size 0
+    [0m[32m
+Trying with
+    /usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473"
+to get
+    http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m
+[32m
+    Function system("/usr/bin/wget -O "/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473" "http://cpan.perl.org/authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/" ")
+    returned status 8 (wstat 2048), left
+/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473 with size 0
+    [0m[31mWarning: no success downloading '/home/users/lab0605/keith/.cpan/sources/authors/id/I/I/I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl.tmp18473'. Giving up on it.[0m
+[32mNo external ftp command available[0m
+
+[32mCPAN: YAML::XS loaded ok (v0.35)[0m
+[31mPlease check, if the URLs I found in your configuration file
+(http://ppm.activestate.com/CPAN, http://cpan.perl.org) are valid. The
+urllist can be edited. E.g. with 'o conf urllist push ftp://myurl/'[0m
+
+[31mCould not fetch authors/id/I/I//I/IN/INSTALL_BASE=/home/users/allstaff/tonkin-hill.g/perl/[0m

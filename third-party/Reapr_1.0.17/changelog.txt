@@ -1,0 +1,160 @@
+______ 1.0.16 -> 1.0.17 ______
+
+* Expose number of threads option in smalt map
+
+* Expose all task options when running the pipeline
+
+* Bug fix with some options not working in stats task.
+
+* Add comma to the list of bad characters in facheck
+
+* Update manual to reflect changes and change examples
+to have what to do with just one library. Fix a couple
+of typos in examples.
+
+* Speed up fa2gc stage of preprocess by about 4 times.
+
+
+______ 1.0.15 -> 1.0.16 ______
+
+* Added option -t to task 'break'. This can be used to trim
+bases off contigs ends, wherever a contig is broken from an
+FCD error with the -a option.
+
+* Change default of -l option of break to output sequences that are at
+least 100bp long (default was 1bp).
+
+* install.sh now checks that the required Perl modules are installed, and
+checks that R is in the path.
+
+* install.sh checks that the OS appears to be Linux and dies if
+it's not. Added option to try to force the install anyway regardless of OS.
+
+* Bug fix in smaltmap: depending on the OS, bam header was not getting
+made correctly.
+
+* smaltmap now starts by running samtools faidx on the assembly fasta file.
+A common cause of the pipeline falling over is a fasta file that makes
+samtools faidx segfault. Print a nice error message about this
+if samtools faidx ends badly.
+
+______ 1.0.14 -> 1.0.15 ______
+
+* Added task 'seqrename' to rename all the sequences
+in a BAM file. This saves remapping the reads to make a
+new BAM that will be OK for the pipeline.
+
+* Added task 'smaltmap' run map reads using SMALT.
+
+* Updated the plots task to make tabix indexed plots, since
+Artemis (version 15.0.0) can now read these.
+
+* Bug fix in task 'break', where the -l option for min length
+of sequence to output didn't always work.
+
+______ 1.0.13 -> 1.0.14 ______
+
+* Fixed Makefiles for tabix and reapr because they didn't work
+on some systems (e.g. Ubuntu).
+
+* Change sequence names output by break: use underscores instead
+of : and -, so that the output is compatible with REAPR itself.
+
+* Added -b option to break, which will ignore FCD and low fragment
+coverage errors within contigs (i.e. those that don't contain a
+gap)
+
+______ 1.0.12 -> 1.0.13 ______
+
+* Bug fix: off by one error in coordinates in
+errors gff file made by 'score'.
+
+* pipeline now starts by running facheck
+on the assembly.
+
+* pipeline changed so that it writes a bash
+script of all the commands it's going to run,
+then runs that bash script. Useful if it dies
+and you want to know the commands needed to finish
+the pipeline.
+
+* Change in perfectmap: added --variance to be
+0.5 * fragment size in the call to snpomatic.
+The previous default was 0.25 * fragment size.
+
+* Added -a option to 'break' for aggressive breaking:
+it breaks contigs at errors (as well as breaking at
+gaps).
+
+
+______ 1.0.11 -> 1.0.12 ______
+
+* Bug fix where in rare cases the 'break'
+task would incorrectly make a broken fasta file
+with duplicated sequences, or sequences continuing
+right through to the end of the scaffold, instead of
+stopping at the appropriate gap.
+
+* Prefix the name of every bin contig
+made when running break with 'REAPR_bin.'.
+
+* In facheck, added brackets (){} and various
+other characters to the list of characters that
+break the pipeline.
+
+* More verbose error message in preprocess when
+something goes wrong at the point of sampling the
+fragment coverage vs GC content.
+
+* Fix typo in report.txt file made by summary, should be
+'low score' not 'high score'. Also now writes the same
+information in a report.tsv file, for ease of putting
+results into spreadsheets.
+
+______ 1.0.10 -> 1.0.11 ______
+
+* Switch meaning of score to be more intuitive,
+so that a score of 1 means perfect, down to
+0 for bad.  Give all gaps a score of -1.
+
+
+______ 1.0.9 -> 1.0.10 ______
+
+* Bug fix with counting perfect bases.  It was slightly
+overestimating, by counting gaps which were too long
+to call as perfect.
+
+
+______ 1.0.8 -> 1.0.9 ______
+
+* Added task 'perfectfrombam' to use as an alternative to
+perfectmap.  perfectmap maps reads with SNP-o-matic, which
+is very fast but also very high memory.  perfectmapfrombam
+takes a BAM file as input, and generates a file of perfect
+and uniquely mapped reads, same format as for perfectmap,
+for use in the REAPR pipeline.  Intended use case is
+large genomes.
+
+* Fix bug where facheck was writing .fa and .info files
+when just an assembly fasta was given as input, with no
+output files prefix.
+
+* Bug fix of link reporting.  The coords needed 1 adding
+to them in the Note... section of the gff file made by score.
+
+* Remove superfluous double-quotes in the note section
+of the gff errors file made by score.
+
+* For each plot file, now additionally writes data in a .dat file,
+(the R plots truncate the x axis and so the .R files don't
+have all the data in them, but the .dat files do
+have all the data in them, should anyone want it).
+
+* Add option -u to stats task, to just run on a given
+list of chromosomes.
+
+* Added -f to every system call to tabix
+
+* 'break' now also outputs a prefix.broken_assembly_bin.fa
+fasta file of the parts of the genomes which were replaced
+with Ns.

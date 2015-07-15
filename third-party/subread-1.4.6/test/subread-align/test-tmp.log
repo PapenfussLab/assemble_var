@@ -1,0 +1,47 @@
+*************************************************
+*** SINGLE-END READS NO ERROR              ******
+*************************************************
+
+unmatched= 563 ;   matched= 19435 ;     unmapped= 0 ;     reads= 19998     ;NN= 0
+accuracy= 0.971847184718  ;    sensitivity= 1.0
+paired_match= 0   ;     paired= 0.0
+*************************************************
+*** SINGLE-END READS NO ERROR NO DUP       ******
+*************************************************
+
+unmatched= 57 ;   matched= 18791 ;     unmapped= 1150 ;     reads= 19998     ;NN= 0
+accuracy= 0.996975806452  ;    sensitivity= 0.942494249425
+paired_match= 0   ;     paired= 0.0
+
+*************************************************
+***  READS WITH NO ERROR                   ******
+*************************************************
+
+unmatched= 630 ;   matched= 39366 ;     unmapped= 0 ;     reads= 39996     ;NN= 0
+accuracy= 0.984248424842  ;    sensitivity= 1.0
+paired_match= 39308   ;     paired= 0.998526647361
+
+*************************************************
+***  READS NO ERROR, NO DUPLICATED REPORT  ******
+*************************************************
+
+unmatched= 188 ;   matched= 38790 ;     unmapped= 1018 ;     reads= 39996     ;NN= 0
+accuracy= 0.995176766381  ;    sensitivity= 0.974547454745
+paired_match= 38710   ;     paired= 0.997937612787
+
+*************************************************
+***  READS WITH ONLY SEQUENCING ERROR      ******
+*************************************************
+
+unmatched= 920 ;   matched= 39068 ;     unmapped= 12 ;     reads= 40000     ;NN= 0
+accuracy= 0.976993097929  ;    sensitivity= 0.9997
+paired_match= 38848   ;     paired= 0.994368792874
+
+*************************************************
+***  READS WITH SEQUENCING ERROR AND MUTATION ***
+***  SUBREAD IS RUN WITH LONG INDEL DETECTION ***
+*************************************************
+
+unmatched= 862 ;   matched= 39131 ;     unmapped= 7 ;     reads= 40002     ;NN= 0
+accuracy= 0.97844622809  ;    sensitivity= 0.999775011249
+paired_match= 38902   ;     paired= 0.994147862309

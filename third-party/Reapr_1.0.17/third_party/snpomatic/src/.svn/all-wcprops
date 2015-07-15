@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svnroot/snpomatic/!svn/ver/10/src
+END
+TChromosome.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svnroot/snpomatic/!svn/ver/1/src/TChromosome.cpp
+END
+findknownsnps.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svnroot/snpomatic/!svn/ver/8/src/findknownsnps.cpp
+END
+reassemble.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svnroot/snpomatic/!svn/ver/1/src/reassemble.cpp
+END
+snpomatic.h
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svnroot/snpomatic/!svn/ver/9/src/snpomatic.h
+END
+TAlignmentOutput.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svnroot/snpomatic/!svn/ver/1/src/TAlignmentOutput.cpp
+END
+variety.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svnroot/snpomatic/!svn/ver/1/src/variety.cpp
+END
+mapcontigs.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svnroot/snpomatic/!svn/ver/1/src/mapcontigs.cpp
+END
+TChromosomalIndices.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svnroot/snpomatic/!svn/ver/1/src/TChromosomalIndices.cpp
+END
+global_functions.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svnroot/snpomatic/!svn/ver/1/src/global_functions.cpp
+END
+TChromosomeAlign.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svnroot/snpomatic/!svn/ver/10/src/TChromosomeAlign.cpp
+END
+ungap.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svnroot/snpomatic/!svn/ver/1/src/ungap.cpp
+END

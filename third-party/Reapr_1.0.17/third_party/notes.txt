@@ -1,0 +1,25 @@
+Third party software:
+
+cmake:
+  http://www.cmake.org/
+  wget http://www.cmake.org/files/v2.8/cmake-2.8.7.tar.gz
+
+Bamtools:
+  https://github.com/pezmaster31/bamtools
+
+Tabix:
+  https://github.com/ekg/tabixpp
+
+SNP-o-matic:
+  http://snpomatic.sourceforge.net/
+  http://sourceforge.net/scm/?type=svn&group_id=256020
+  svn co https://snpomatic.svn.sourceforge.net/svnroot/snpomatic
+
+gnuplot:
+  http://sourceforge.net/projects/gnuplot/files/
+
+samtools:
+  http://sourceforge.net/projects/samtools/files/
+
+SMALT:
+  http://www.sanger.ac.uk/resources/software/smalt/
