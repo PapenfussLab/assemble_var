@@ -35,6 +35,8 @@ Options:
                         already exist.
   --ins_length=INS_LENGTH
                         the insert length passed to oases
+  --adapter=ADAPTER     the adapter sequence to be passed to Trim Galore.
+                        Defaults totrim galore's default if not supplied.
   --verbose             turns on more detailed output
   --pear                merge read pairs that overlap before oases.
   --norm                perform digital normalisation which decreases the
