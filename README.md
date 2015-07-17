@@ -10,3 +10,6 @@ The main program is **assembly_var.py** it takes as input:
 It ouputs:
 * A fasta file with contigs. Further filtering may then be required to remove any remaining contaminants.
 
+## assemble_var.py
+
+### test
