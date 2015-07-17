@@ -284,15 +284,15 @@ def filter_Locus_1(outputdir, folder_prefix, verbose=False):
                     outfile.write(">" + t[0] + "\n")
                     outfile.write(t[1] + "\n")
 
-    out_fileB = outputdir + "filter_locus1_transcripts.fa"
-    with open(out_fileB, 'w') as outfile:
-        for locus in locus_dict:
-            if len(locus_dict[locus]) == 1:
-                for t in locus_dict[locus]:
-                    outfile.write(">" + t[0] + "\n")
-                    outfile.write(t[1] + "\n")
+    # out_fileB = outputdir + "filter_locus1_transcripts.fa"
+    # with open(out_fileB, 'w') as outfile:
+    #     for locus in locus_dict:
+    #         if len(locus_dict[locus]) == 1:
+    #             for t in locus_dict[locus]:
+    #                 outfile.write(">" + t[0] + "\n")
+    #                 outfile.write(t[1] + "\n")
         
-    return out_fileA, out_fileB
+    return out_fileA
 
 def assemble_contigs_cap3(transcript_file, outputdir, verbose=False
     , outname="transcripts_cap3.fa"):
