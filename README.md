@@ -34,7 +34,13 @@ Options:
                         the insert length passed to oases
   --verbose             turns on more detailed output
   --pear                merge read pairs that overlap before oases.
-  --norm                merge read pairs that overlap before oases.
+  --norm                perform digital normalisation which decreases the
+                        computational time required for assembly.
 
 ```
 #### Usage Example
+
+```python
+python assemble_var.py -r /path/to/read1.fastq -R /path/to/read2.fastq --reference /path/to/reference.fasta -v /path/to/Pvivax_VAR.gff -v /path/to/Pfalciparum_VAR.gff -o /path/to/output_directory/ --norm
+```
+```
