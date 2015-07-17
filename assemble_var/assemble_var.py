@@ -25,34 +25,36 @@ def build(options):
     curr_dir = os.getcwd()
     os.chdir(outputdir)
     
-    # # print thrd.getScriptPath()
-    # read1, read2 = thrd.trim_galore(options.read1, options.read2, outputdir
-    #     , options.verbose)
+    # print thrd.getScriptPath()
+    read1, read2 = thrd.trim_galore(options.read1, options.read2, outputdir
+        , options.verbose)
 
-    # alignment = thrd.align_w_subread(read1, read2, options.reference, outputdir
-    #     , options.verbose, options.ref_index)
+    if options.reference:
 
-    # bamfile = thrd.convert_to_bam_create_index(options.reference, alignment
-    #     , options.verbose)
+        alignment = thrd.align_w_subread(read1, read2, options.reference, outputdir
+            , options.verbose, options.ref_index)
 
-    # single_reads, paired_reads = thrd.extract_possible_var_reads(bamfile
-    #     , outputdir, options.var_files, options.verbose)
+        bamfile = thrd.convert_to_bam_create_index(options.reference, alignment
+            , options.verbose)
 
-    # # single_reads, paired_reads = outputdir + "extracted_unpaired.fq", outputdir + "extracted_paired.fq"
+        single_reads, paired_reads = thrd.extract_possible_var_reads(bamfile
+            , outputdir, options.var_files, options.verbose)
 
-    # if options.pear:
-    #     single_reads, paired_reads = thrd.merge_with_pear(single_reads
-    #         , paired_reads, outputdir, options.verbose)
+    else:
+        single_reads, paired_reads = thrd.combine_paired(read1, read2, outputdir
+            , options.verbose)
 
-    # #now digital normalisation on the single_reads and paired reads seperately
-    # if options.norm:
-    #     single_reads, paired_reads = thrd.digi_norm(single_reads
-    #         , paired_reads, outputdir, options.verbose)
+    # single_reads, paired_reads = outputdir + "extracted_unpaired.fq", outputdir + "extracted_paired.fq"
 
+    if options.pear:
+        single_reads, paired_reads = thrd.merge_with_pear(single_reads
+            , paired_reads, outputdir, options.verbose)
 
+    #now digital normalisation on the single_reads and paired reads seperately
+    if options.norm:
+        single_reads, paired_reads = thrd.digi_norm(single_reads
+            , paired_reads, outputdir, options.verbose)
 
-    single_reads = "/home/users/allstaff/tonkin-hill.g/novel_data/assemble_all_renormalised/temp_files/re_normalised_single.fa"
-    paired_reads = "/home/users/allstaff/tonkin-hill.g/novel_data/assemble_all_renormalised/temp_files/re_normalised_paired.fa"
 
     # transcript_file = thrd.assemble_paired_reads(single_reads, paired_reads
     #     , options.outputdir, options.ins_length, options.verbose)
@@ -77,13 +79,20 @@ def build(options):
 
 def main():
     parser = OptionParser()
+
     parser.add_option("-r", "--read1", dest="read1",
         help="first set of read pairs")
+
     parser.add_option("-R", "--read2", dest="read2",
         help="second set of read pairs")
+
     parser.add_option("", "--reference", dest="reference"
+        , default=None
         , help=("a fasta file containing the reference"
-            + " genomes we want to filter out"))
+            + " genomes we want to filter out. If using multiple"
+            + " different references they will need to be combined"
+            + " into one fasta file. i.e using cat"))
+
     parser.add_option("", "--index", dest="ref_index", default=False,
         help=("the location of the index files."
             + " Usefule if performing multiple assemblies as this"
@@ -96,7 +105,8 @@ def main():
                     + ' - that is a subset of reference'))
 
     parser.add_option("-o", "--outputdir", dest="outputdir",
-        help="output directory")
+        help=("output directory. This will be created if it doesn't already"
+            + " exist."))
 
     parser.add_option("", "--ins_length", dest="ins_length"
         , default=False, help="the insert length passed to oases")
@@ -108,7 +118,8 @@ def main():
         , default=False, help="merge read pairs that overlap before oases.")
 
     parser.add_option("", "--norm", action="store_true", dest="norm"
-        , default=False, help="merge read pairs that overlap before oases.")
+        , default=False, help=("perform digital normalisation which decreases"
+         + " the computational time required for assembly."))
 
     # #optional parts of the assembly are called like this
     # parser.add_option(,"--nofilter", action="store_false", dest=isfilter, default=True

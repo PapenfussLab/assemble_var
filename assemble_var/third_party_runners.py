@@ -371,10 +371,24 @@ def  digi_norm(single, paired, outputdir, verbose=False):
     return outputdir + "normalised_single.fa", outputdir + "normalised_paired.fa"
 
 
+def combine_paired(read1, read2, outputdir, verbose=False):
+    #function if we skip the alignment step.
+    scriptPath = getScriptPath()
+    script = "python " + scriptPath + "/third-party/khmer/scripts/interleave-reads.py"
 
+    combine_cmd = (script
+        + " -o " + outputdir + "interleaved_paired.fq"
+        + " " + read1
+        + " " + read2)
 
+    if verbose:
+        print combine_cmd
 
+    check_call(combine_cmd, shell=True)
 
+    open(outputdir + "interleaved_single.fq", 'a').close()
+
+    return outputdir + "interleaved_single.fq", outputdir + "interleaved_paired.fq"
 
 
 
