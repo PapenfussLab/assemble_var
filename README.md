@@ -12,5 +12,5 @@ It ouputs:
 
 
 ### assemble_var.py
-- **-r --read1** 
--   The first fastq file
+###### -r --read1
+The first fastq file
