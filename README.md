@@ -14,3 +14,6 @@ It ouputs:
 ### assemble_var.py
 ###### -r --read1
 The first fastq file
+###### -R --read2
+The second fastq file
+###### ssg
