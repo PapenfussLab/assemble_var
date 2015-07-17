@@ -32,7 +32,7 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
 
     if verbose:
         print trim_cmd
-    # check_call(trim_cmd, shell=True)
+    check_call(trim_cmd, shell=True)
   
 
     return (outputdir + os.path.splitext(os.path.basename(inputfile))[0]+"_val_1.fq"
@@ -56,7 +56,7 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
         if verbose:
             print index_cmd
         #first build indices for subread program
-        # check_call(index_cmd, shell=True)
+        check_call(index_cmd, shell=True)
 
 
  
@@ -75,7 +75,7 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
     if verbose:
         print align_cmd
     #now align read to reference
-    # check_call(align_cmd, shell=True)
+    check_call(align_cmd, shell=True)
 
     return outputdir + "alignment.sam"
 
@@ -99,8 +99,8 @@ def convert_to_bam_create_index(reference, filename, verbose=False):
         print sort_cmd
         print index_cmd
 
-    # check_call(sam_cmd, shell=True)
-    # check_call(sort_cmd, shell=True)
+    check_call(sam_cmd, shell=True)
+    check_call(sort_cmd, shell=True)
     check_call(index_cmd, shell=True)
 
     return ".".join(filename.split(".")[:-1]) + "_sort.bam"
