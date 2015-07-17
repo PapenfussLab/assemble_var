@@ -1,0 +1,50 @@
+Tue Jul 29 15:45:11 2014
+ velveth IFD6_S1_L001_R1_001 8 reads_to_be_assembled_IFD6_S1_L001_R1_001.bam
+Version 1.2.08
+Copyright 2007, 2008 Daniel Zerbino (zerbino@ebi.ac.uk)
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Compilation settings:
+CATEGORIES = 2
+MAXKMERLENGTH = 31
+
+Tue Jul 29 15:47:29 2014
+ velveth IFD6_S1_L001_R1_001 8 ./data/outputs/reads_to_be_assembled_IFD6_S1_L001_R1_001.bam
+Version 1.2.08
+Copyright 2007, 2008 Daniel Zerbino (zerbino@ebi.ac.uk)
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Compilation settings:
+CATEGORIES = 2
+MAXKMERLENGTH = 31
+
+Tue Jul 29 15:48:12 2014
+ velveth IFD6_S1_L001_R1_001 8 /home/users/allstaff/tonkin-hill.g/find_var_genes/outputs/reads_to_be_assembled_IFD6_S1_L001_R1_001.bam
+Version 1.2.08
+Copyright 2007, 2008 Daniel Zerbino (zerbino@ebi.ac.uk)
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Compilation settings:
+CATEGORIES = 2
+MAXKMERLENGTH = 31
+
+Tue Jul 29 15:53:38 2014
+ velveth IFD6_S1_L001_R1_001 8 /home/users/allstaff/tonkin-hill.g/find_var_genes/outputs/reads_to_be_assembled_IFD6_S1_L001_R1_001.bam
+Version 1.2.08
+Copyright 2007, 2008 Daniel Zerbino (zerbino@ebi.ac.uk)
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Compilation settings:
+CATEGORIES = 2
+MAXKMERLENGTH = 31
+
+Tue Jul 29 16:02:32 2014
+ velveth IFD6_S1_L001_R1_001 8,83,8 /home/users/allstaff/tonkin-hill.g/find_var_genes/outputs/reads_to_be_assembled_IFD6_S1_L001_R1_001.bam
+Version 1.2.10
+Copyright 2007, 2008 Daniel Zerbino (zerbino@ebi.ac.uk)
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Compilation settings:
+CATEGORIES = 2
+MAXKMERLENGTH = 100
+

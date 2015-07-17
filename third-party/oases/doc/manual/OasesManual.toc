@@ -1,0 +1,22 @@
+\contentsline {section}{\numberline {1}For impatient people}{2}{section.1}
+\contentsline {section}{\numberline {2}Installing Oases}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Getting the code}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Compiling the code}{2}{subsection.2.2}
+\contentsline {section}{\numberline {3}Running Oases}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}Single-$k$ assemblies}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Oases options}{4}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Oases help}{4}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Insert length}{4}{subsubsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.3}Coverage cutoff}{4}{subsubsection.3.2.3}
+\contentsline {subsubsection}{\numberline {3.2.4}Edge fraction cutoff}{4}{subsubsection.3.2.4}
+\contentsline {subsubsection}{\numberline {3.2.5}Scaffold filtering}{5}{subsubsection.3.2.5}
+\contentsline {subsubsection}{\numberline {3.2.6}Filtering the output}{5}{subsubsection.3.2.6}
+\contentsline {subsection}{\numberline {3.3}Assembly merging}{5}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Using the supplied python script}{5}{subsection.3.4}
+\contentsline {section}{\numberline {4}Output files}{7}{section.4}
+\contentsline {section}{\numberline {5}FAQ and Practical considerations}{8}{section.5}
+\contentsline {section}{\numberline {6}For more information}{10}{section.6}
+\contentsline {paragraph}{Publication:}{10}{section*.5}
+\contentsline {paragraph}{Webpage:}{10}{section*.6}
+\contentsline {paragraph}{Mailing list:}{10}{section*.7}
+\contentsline {paragraph}{Contact emails:}{10}{section*.8}

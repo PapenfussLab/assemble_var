@@ -1,0 +1,145 @@
+V 0.1.1
+- Original release
+
+V 0.1.2
+- Added the updateOases script
+- Coded in default parameters
+- Amended Makefile
+- Small error in gap distances
+- Added test dataset
+- Now outputs unused reads
+- Counts reads used in assembly
+- Minimum transcript length can be imposed
+- Merged plausible and highly expressed transcripts
+
+V 0.1.3
+- Modified Makefile to eliminate side effect on Velvet installation
+- Minimum gap length in fasta file is set at 10 bp
+- Corrected crashing bug when printing UnusedReads file 
+- Eliminated empty transcripts
+
+V 0.1.4
+- Removed erroneous lines in Makefile
+- Corrected mistake in length of gap
+
+V 0.1.5
+- Unused reads now selected properly
+- AFG output available
+- Colorspace now handled explicitly
+
+V 0.1.6
+- Compilation warning avoided
+- Changed numbering of loci and transcripts in output to 1-based indexing
+- Bug in setting min_pair_count
+- Added the paired_cutoff parameter
+
+V 0.1.7
+- Correction to manual
+- Corrected bug which added lots of gaps
+- Added -scaffolding option
+
+V 0.1.8
+- Updated manual
+- Reduced number of N gaps
+
+V 0.1.9
+- Further reduced number of artificial 1bp gaps
+- Crashing bugs when running in the absence of short reads
+
+V 0.1.10
+- Compilation warnings addressed
+- Missing long read connections corrected
+- Missong short read connections corrected
+
+V 0.1.11
+- Compatibility issues with Velvet 1.0
+- Output of alignments
+
+V 0.1.12
+- Compatibility with Velvet 1.0.06
+- Removal of near-identical transcripts
+
+V 0.1.13
+- Inversion of bubble smoothing and coverage cutoff
+- Weakened the '-scaffold no' 
+- TourBus loss of connections bug
+
+V 0.1.14
+- Strand-specific read orientation.
+
+V 0.1.15
+- Increased paired-end sensitivity
+- Weakened the 'scaffold no' clipping
+
+V 0.1.16 
+- Compilation warning
+- Compatibility with latest Velvet
+
+V 0.1.17
+- Confidence score bug for singleton contigs
+- Transcript count bug for loci with short transcripts
+
+V 0.1.18
+- Updated readme file
+- Reverted default minimum transcript length to 100bp
+
+V 0.1.19
+- Corrected the output of contig sequences to match the length cutoff 
+- Conservative coverage cutoff for long sequences (mergeing)
+- Penalty for hairpin assemblies
+
+V 0.1.20
+- Compatibility with Velvet 1.1.x
+- Repeated transcripts - some left due to initial short nodes
+
+V 0.1.21
+- Compatibility with Velvet 1.1.03+
+
+V 0.1.22
+- POSIX compliant Makefile
+- Velvet compatible Makefile
+
+V 0.1.23
+- Variable sizes for sequence lengths
+- Heuristics to remove totally spurious connections
+- Explicit merge function
+- Some code cleanup
+
+V 0.2.01
+- Merge option
+- Pipeline script
+
+V 0.2.02
+- Bundled zlib pointer in Makefile
+- Ubuntu linking problem in Makefile
+
+V 0.2.03
+- Compatibility with Velvet 1.2.x
+
+V 0.2.04
+- Updated Manual
+- Pipeline script fixed to work with inclusive intervals
+- Improved redundancy filters
+
+V 0.2.05
+- Updated pipeline script for subprocess change
+- Increased default MAXKMERLENGTH
+- Bug in sorting nodes in filterTranscripts
+
+V 0.2.06
+- Bug in Python
+- Streamlined merging
+- Updated manual
+
+V 0.2.07
+- Massive refactoring of the code
+- Bug with confidence > 1
+- Reduced the amount of unwanted gaps in assemblies
+- Memory corruptions
+- More consistent removal of transcripts when merging
+
+V 0.2.08
+- Reads binary sequences files
+
+V 0.2.09
+- Store stats in Log file
