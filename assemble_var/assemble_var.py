@@ -111,6 +111,10 @@ def main():
     parser.add_option("", "--ins_length", dest="ins_length"
         , default=False, help="the insert length passed to oases")
 
+    parser.add_option("", "--adapter", dest="adapter", default=False
+        , help="the adapter sequence to be passed to Trim Galore. Defaults to"
+            + "trim galore's default if not supplied.")
+
     parser.add_option("","--verbose", action="store_true", dest="verbose"
         , default=False, help="turns on more detailed output")
 
