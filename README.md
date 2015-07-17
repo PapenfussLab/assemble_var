@@ -21,7 +21,9 @@ Options:
                         second set of read pairs
   --reference=REFERENCE
                         a fasta file containing the reference genomes we want
-                        to filter out
+                        to filter out. If using multiple different references
+                        they will need to be combined into one fasta file. i.e
+                        using cat
   --index=REF_INDEX     the location of the index files. Usefule if performing
                         multiple assemblies as this does not need to be
                         recomputed each time.
@@ -29,7 +31,8 @@ Options:
                         var files that contain var regions we want to keep -
                         that is a subset of reference
   -o OUTPUTDIR, --outputdir=OUTPUTDIR
-                        output directory
+                        output directory. This will be created if it doesn't
+                        already exist.
   --ins_length=INS_LENGTH
                         the insert length passed to oases
   --verbose             turns on more detailed output
