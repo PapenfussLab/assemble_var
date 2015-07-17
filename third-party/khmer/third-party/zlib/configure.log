@@ -1,0 +1,22 @@
+--------------------
+./configure --static
+Sat Nov  1 18:08:20 EST 2014
+=== ztest10939.c ===
+extern int getchar();
+int hello() {return getchar();}
+===
+/bin/cc -c ztest10939.c
+... using /bin/cc
+
+Checking for obsessive-compulsive compiler options...
+=== ztest10939.c ===
+int foo() { return 0; }
+===
+/bin/cc -c -O ztest10939.c
+./configure: line 343: /bin/cc: No such file or directory
+(exit code 127)
+Compiler error reporting is too harsh for ./configure (perhaps remove -Werror).
+** ./configure aborting.
+--------------------
+
+
