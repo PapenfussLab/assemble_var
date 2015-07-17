@@ -37,8 +37,4 @@ Options:
   --norm                merge read pairs that overlap before oases.
 
 ```
-###### -r --read1
-The first fastq file
-###### -R --read2
-The second fastq file
-###### ssg
+#### Usage Example
