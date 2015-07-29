@@ -1,7 +1,4 @@
-from optparse import OptionParser
-import third_party_runners as thrd
-import os, sys
-import inspect
+import os, sys, inspect
 
  # realpath() will make your script run, even if you symlink it :)
 cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( 
@@ -19,6 +16,9 @@ cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(
     inspect.getfile( inspect.currentframe() ))[0],"/third-party/mungo/")))
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
+
+from optparse import OptionParser
+import third_party_runners as thrd
 
 
 def build(options):
