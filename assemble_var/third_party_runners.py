@@ -62,7 +62,7 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
         if verbose:
             print index_cmd
         #first build indices for subread program
-        #check_call(index_cmd, shell=True)
+        check_call(index_cmd, shell=True)
 
 
  
