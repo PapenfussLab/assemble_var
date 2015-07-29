@@ -1,10 +1,9 @@
 import os, sys, inspect
 from subprocess import check_call
 
-# use this if you want to include modules from a subfolder
+# add path to mungo library
 cmd_subfolder = (os.path.dirname(os.path.dirname(os.path.realpath(__file__))) 
     + "/third-party/")
-print cmd_subfolder
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 
@@ -28,8 +27,8 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
         + " --paired "
         + " --dont_gzip")
 
-    if adapter:
-        trim_cmd = trim_cmd + " --adapter " + adapter
+    # if adapter:
+    #     trim_cmd = trim_cmd + " --adapter " + adapter
 
     trim_cmd = (trim_cmd 
         + " --output_dir " + outputdir + " "
