@@ -457,10 +457,10 @@ def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
         check_call(soap_cmd, shell=True)
 
     #now to merge with cap3
-    check_call("cat ")
+    # check_call("cat ")
 
-    assemble_contigs_cap3(transcript_file, outputdir, verbose=False
-        , outname="transcripts_cap3.fa"):
+    # assemble_contigs_cap3(transcript_file, outputdir, verbose=False
+    #     , outname="transcripts_cap3.fa"):
 
     return
 
