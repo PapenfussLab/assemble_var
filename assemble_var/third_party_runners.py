@@ -409,28 +409,25 @@ def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
     config_str =(
     """
     #maximal read length
-    max_rd_len=50
+    max_rd_len=250
     [LIB]
     #maximal read length in this lib
-    rd_len_cutof=45
+    rd_len_cutof=250
     #average insert size
-    avg_ins=200
+    avg_ins=0
     #if sequence needs to be reversed
     reverse_seq=0
     #in which part(s) the reads are used
     asm_flags=3
     #minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)
     map_len=32
-    q=/path/**LIBNAMEA**/fastq_read_single.fq
     #fasta file for single reads
-    f=
-    """
+    f="""
     + fasta_single
     +
     """
     #a single fasta file for paired reads
-    p=
-    """
+    p="""
     + fasta_paired
     )
 
@@ -440,8 +437,8 @@ def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
         + "/third-party/SOAPdenovo-Trans-bin-v1.03/SOAPdenovo-Trans-127mer")
 
     for K in ["21", "31", "41", "51", "61"]:
-        config_file =
-        outputGraph =
+        config_file = outputdir + "soapConfigK" + K
+        outputGraph = outputdir + "soapGraphK" + K
 
         soap_cmd = (script +
             " all"
@@ -465,6 +462,7 @@ def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
     assemble_contigs_cap3(transcript_file, outputdir, verbose=False
         , outname="transcripts_cap3.fa"):
 
+    return
 
 
 
