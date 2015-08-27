@@ -2,7 +2,7 @@ import os, sys, inspect
 from subprocess import check_call
 
 # add path to mungo library
-cmd_subfolder = (os.path.dirname(os.path.dirname(os.path.realpath(__file__))) 
+cmd_subfolder = (os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     + "/third-party/")
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
@@ -14,14 +14,14 @@ from collections import defaultdict
 
 def getScriptPath():
     directory = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    return directory 
+    return directory
 
 def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
     #filter out ILLUMINA primer etc
     #returns the filenames of the filtered reads
     scriptPath = getScriptPath()
 
-    trim_cmd = (scriptPath 
+    trim_cmd = (scriptPath
         + "/third-party/trim_galore/trim_galore "
         + " --phred33 "
         + " --paired "
@@ -30,7 +30,7 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
     # if adapter:
     #     trim_cmd = trim_cmd + " --adapter " + adapter
 
-    trim_cmd = (trim_cmd 
+    trim_cmd = (trim_cmd
         + " --output_dir " + outputdir + " "
         + inputfile + " "
         + inputfile2
@@ -39,7 +39,7 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
     if verbose:
         print trim_cmd
     check_call(trim_cmd, shell=True)
-  
+
 
     return (outputdir + os.path.splitext(os.path.basename(inputfile))[0]+"_val_1.fq"
         , outputdir + os.path.splitext(os.path.basename(inputfile2))[0]+"_val_2.fq")
@@ -65,7 +65,7 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
         check_call(index_cmd, shell=True)
 
 
- 
+
     align_cmd = (scriptPath
         + "subread-align "
         + " -d 50"
@@ -87,7 +87,7 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
 
 def convert_to_bam_create_index(reference, filename, verbose=False):
     #converts filename into a bam with the reference and puts the result into outputdir
-    
+
     sam_cmd = ("samtools view -b"
         + " -T " + reference
         + " -o " + ".".join(filename.split(".")[:-1]) + ".bam"
@@ -117,7 +117,7 @@ def extract_possible_var_reads(bamfile, outputdir, varfiles=None, verbose=False)
 
     count = 1
     count_var = 1
-    
+
     # for f, F in zip([4,8,12], [264,260,256]): #used if we want mate pairs as well
     for f in [4]: #just get unmapped reads
         sam_cmd = ("samtools view -u"
@@ -125,7 +125,7 @@ def extract_possible_var_reads(bamfile, outputdir, varfiles=None, verbose=False)
             # + " -F " + str(F)
             + " " + bamfile
             + " | samtools sort -n - " + outputdir + "temp_file"+str(count)
-            # + " > " + outputdir + "temp_file"+str(count)+".bam" 
+            # + " > " + outputdir + "temp_file"+str(count)+".bam"
             )
         if verbose:
             print sam_cmd
@@ -190,8 +190,8 @@ def merge_with_pear(single_seq, paired_seq, outputdir, verbose=False):
     #now run PEAR
     outname = ".".join(paired_seq.split(".")[:-1]) + "PEAR"
     pear_cmd = (scriptPath + "/third-party/pear"
-        + " -f " + paired_seq + ".1" 
-        + " -r " + paired_seq + ".2" 
+        + " -f " + paired_seq + ".1"
+        + " -r " + paired_seq + ".2"
         + " -o " + outname)
     if verbose:
         print pear_cmd
@@ -210,7 +210,7 @@ def merge_with_pear(single_seq, paired_seq, outputdir, verbose=False):
     check_call(merge_cmd, shell=True)
 
     #Now merge the signle reads together
-    cat_cmd = ("cat " + single_seq 
+    cat_cmd = ("cat " + single_seq
         + " " + outname + ".assembled.fastq"
         + " > " + outputdir + "singlePear.fastq")
     if verbose:
@@ -237,7 +237,7 @@ def assemble_paired_reads(fasta_single, fasta_paired, outputdir
     , ins_length=False, verbose=False):
     # print "WARNING: using default insert length which is not reliable according to oases manual"
 
-    
+
     #de-novo assemble reads using oases
     scriptPath = getScriptPath()
     velveth = scriptPath + "/third-party/velveth"
@@ -258,7 +258,7 @@ def assemble_paired_reads(fasta_single, fasta_paired, outputdir
         + " -shortPaired " + fasta_paired + " \"")
     if ins_length:
         assemble_cmd = assemble_cmd + " -p \" -ins_length " + ins_length + " \""
-        
+
 
     if verbose:
         print assemble_cmd
@@ -297,7 +297,7 @@ def filter_Locus_1(outputdir, folder_prefix, verbose=False):
     #             for t in locus_dict[locus]:
     #                 outfile.write(">" + t[0] + "\n")
     #                 outfile.write(t[1] + "\n")
-        
+
     return out_fileA
 
 def assemble_contigs_cap3(transcript_file, outputdir, verbose=False
@@ -305,7 +305,7 @@ def assemble_contigs_cap3(transcript_file, outputdir, verbose=False
 
     #assemble the contigs using cap3
     cap3_cmd = ("cap3 "
-        + transcript_file 
+        + transcript_file
         + " -p 99 -c 200"
         + " > " + outputdir + "cap.out")
 
@@ -345,7 +345,7 @@ def run_blast(reference, query_contigs, outdir, verbose=False):
         + os.path.splitext(os.path.basename(reference))[0] + "_"
         + os.path.splitext(os.path.basename(query_contigs))[0]
         )
-    blast_cmd = ("blastn " 
+    blast_cmd = ("blastn "
         + "-evalue 1e-5 -outfmt 6 "
         # + "-num_alignments " + str(num_hits) + " "
         + "-db " + blastDB + " "
@@ -363,7 +363,6 @@ def  digi_norm(single, paired, outputdir, verbose=False):
     scriptPath = getScriptPath()
     script = "python " + scriptPath + "/third-party/khmer/scripts/normalize-by-median.py"
 
-    
     norm_cmd = (script
         + " -C 20 -k 20 -N 4 -x 2e9"
         + " -o " + outputdir + "normalised_single.fa"
@@ -403,6 +402,68 @@ def combine_paired(read1, read2, outputdir, verbose=False):
 
     return outputdir + "interleaved_single.fq", outputdir + "interleaved_paired.fq"
 
+
+def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
+    , ins_length=False, verbose=False):
+
+    config_str =(
+    """
+    #maximal read length
+    max_rd_len=50
+    [LIB]
+    #maximal read length in this lib
+    rd_len_cutof=45
+    #average insert size
+    avg_ins=200
+    #if sequence needs to be reversed
+    reverse_seq=0
+    #in which part(s) the reads are used
+    asm_flags=3
+    #minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)
+    map_len=32
+    q=/path/**LIBNAMEA**/fastq_read_single.fq
+    #fasta file for single reads
+    f=
+    """
+    + fasta_single
+    +
+    """
+    #a single fasta file for paired reads
+    p=
+    """
+    + fasta_paired
+    )
+
+
+    scriptPath = getScriptPath()
+    script = (scriptPath
+        + "/third-party/SOAPdenovo-Trans-bin-v1.03/SOAPdenovo-Trans-127mer")
+
+    for K in ["21", "31", "41", "51", "61"]:
+        config_file =
+        outputGraph =
+
+        soap_cmd = (script +
+            " all"
+            + " -s " + config_file
+            + " -o " + outputGraph
+            + " -K " + K
+            + " -L 50" #not actually important as we only use the contigs
+            )
+
+        with open(config_file, 'w') as outfile:
+            outfile.write(config_str)
+
+        if verbose:
+            print soap_cmd
+
+        check_call(soap_cmd, shell=True)
+
+    #now to merge with cap3
+    check_call("cat ")
+
+    assemble_contigs_cap3(transcript_file, outputdir, verbose=False
+        , outname="transcripts_cap3.fa"):
 
 
 
