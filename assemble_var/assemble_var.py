@@ -24,7 +24,7 @@ def build(options):
 
     curr_dir = os.getcwd()
     os.chdir(outputdir)
-    
+
     # print thrd.getScriptPath()
     read1, read2 = thrd.trim_galore(options.read1, options.read2, outputdir
         , options.verbose)
@@ -54,17 +54,20 @@ def build(options):
     if options.norm:
         single_reads, paired_reads = thrd.digi_norm(single_reads
             , paired_reads, outputdir, options.verbose)
-    
-    folder_prefix = thrd.assemble_paired_reads(single_reads, paired_reads
-        , options.outputdir, options.ins_length, options.verbose)
-    
-    transcript_file_61 = thrd.filter_Locus_1(options.outputdir
-        , folder_prefix, options.verbose)
 
-    ##Old testing stuff
-    # thrd.assemble_contigs_cap3(harsh_transcipt_file, options.outputdir
-    #     , verbose=options.verbose
-    #     , outname="harsh_transcipt_file_cap3.fa")
+    #if requested assemble with soapdenovo-trans
+    if options.soap:
+        transcript_file_61 = thrd.assemble_paired_reads_soapDeNovoTrans(single_reads, paired_reads
+            , options.outputdir, options.ins_length, options.verbose)
+    #otherwise assemble with oases
+    else:
+
+        folder_prefix = thrd.assemble_paired_reads(single_reads, paired_reads
+            , options.outputdir, options.ins_length, options.verbose)
+
+        transcript_file_61 = thrd.filter_Locus_1(options.outputdir
+            , folder_prefix, options.verbose)
+
 
     thrd.assemble_contigs_cap3(transcript_file_61, options.outputdir
         , verbose=options.verbose
@@ -121,6 +124,9 @@ def main():
     parser.add_option("", "--norm", action="store_true", dest="norm"
         , default=False, help=("perform digital normalisation which decreases"
          + " the computational time required for assembly."))
+
+    parser.add_option("", "--soap", action="store_true", dest="soap"
+        , default=False, help="assemble reads using soapDenovo-trans.")
 
     # #optional parts of the assembly are called like this
     # parser.add_option(,"--nofilter", action="store_false", dest=isfilter, default=True
