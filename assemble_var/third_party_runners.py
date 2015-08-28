@@ -406,6 +406,7 @@ def combine_paired(read1, read2, outputdir, verbose=False):
 def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
     , ins_length=False, verbose=False):
 
+    scriptPath = getScriptPath()
     script = "python " + scriptPath + "/third-party/khmer/scripts/split-paired-reads.py"
     #first split files so PEAR can use them
     split_cmd = (script
