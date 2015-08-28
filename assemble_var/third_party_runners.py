@@ -306,7 +306,7 @@ def assemble_contigs_cap3(transcript_file, outputdir, verbose=False
     #assemble the contigs using cap3
     cap3_cmd = ("cap3 "
         + transcript_file
-        + " -p 99 -c 200"
+        + " -p 99 -o 200"
         + " > " + outputdir + "cap.out")
 
     cat_cmd = ("cat "

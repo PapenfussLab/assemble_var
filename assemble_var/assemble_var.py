@@ -58,7 +58,7 @@ def build(options):
     #if requested assemble with soapdenovo-trans
     if options.soap:
         transcript_file_61 = thrd.assemble_paired_reads_soapDeNovoTrans(single_reads, paired_reads
-            , options.outputdir, options.ins_length, options.verbose)
+            , outputdir, options.ins_length, options.verbose)
     #otherwise assemble with oases
     else:
 
