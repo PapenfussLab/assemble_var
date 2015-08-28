@@ -406,6 +406,10 @@ def combine_paired(read1, read2, outputdir, verbose=False):
 def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
     , ins_length=False, verbose=False):
 
+    #first move in temp directory so the output is kept nicely
+    curr_dir = os.getcwd()
+    os.chdir(outputdir)
+
     scriptPath = getScriptPath()
     script = "python " + scriptPath + "/third-party/khmer/scripts/split-paired-reads.py"
     #first split files so PEAR can use them
@@ -460,13 +464,17 @@ q1=""" + fasta_paired + ".1\n"
 
         check_call(soap_cmd, shell=True)
 
-    #now to merge with cap3
-    # check_call("cat ")
+    #now to combine the contig files
+    outfile = outputdir + "combined_soapDeNovo.fa"
+    combine_cmd = "cat *.contig > " + outfile
+    if verbose:
+        print combine_cmd
+    check_call(combine_cmd, shell=True)
 
-    # assemble_contigs_cap3(transcript_file, outputdir, verbose=False
-    #     , outname="transcripts_cap3.fa"):
+    #return to previous directory
+    os.chdir(curr_dir)
 
-    return
+    return outfile
 
 
 
