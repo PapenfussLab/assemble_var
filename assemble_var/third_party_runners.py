@@ -380,7 +380,7 @@ def  digi_norm(single, paired, outputdir, verbose=False):
         print norm_cmd
     # check_call(norm_cmd, shell=True)
 
-    return outputdir + "normalised_single.fa", outputdir + "normalised_paired.fa"
+    return outputdir + "normalised_single.fq", outputdir + "normalised_paired.fq"
 
 
 def combine_paired(read1, read2, outputdir, verbose=False):
@@ -406,6 +406,15 @@ def combine_paired(read1, read2, outputdir, verbose=False):
 def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
     , ins_length=False, verbose=False):
 
+    script = "python " + scriptPath + "/third-party/khmer/scripts/split-paired-reads.py"
+    #first split files so PEAR can use them
+    split_cmd = (script
+        + " " + fasta_paired)
+
+    if verbose:
+        print split_cmd
+    check_call(split_cmd, shell=True)
+
     config_str =(
 """#maximal read length
 max_rd_len=250
@@ -421,14 +430,9 @@ asm_flags=3
 #minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)
 map_len=32
 #fasta file for single reads
-f="""
-+ fasta_single
-+
-"""
-#a single fasta file for paired reads
-p="""
-    + fasta_paired
-    )
+q1=""" + fasta_paired + ".1\n"
++ "q2=" + fasta_paired + ".2\n"
++ "q=" + fasta_single)
 
 
     scriptPath = getScriptPath()
