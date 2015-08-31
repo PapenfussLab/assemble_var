@@ -70,7 +70,7 @@ def generate_summary(bamfile, outputdir, contig_file
     contig_dict = {}
     for h,s in FastaReader(contig_file):
         if len(h.split("_"))>1:
-            contig_name = "_".join(h.split('_')[:4])
+            contig_name = h #"_".join(h.split('_')[:4])
             print contig_name
         else:
             contig_name = h
@@ -83,7 +83,7 @@ def generate_summary(bamfile, outputdir, contig_file
         samfile.fetch(h, callback=c)
         if len(h.split("_"))>1:
             print h
-            h = "_".join(h.split('_')[:4])
+            h = h # "_".join(h.split('_')[:4])
             print h #rename to match dictionary
         else:
             h = h
@@ -96,7 +96,7 @@ def generate_summary(bamfile, outputdir, contig_file
             for line in bfile:
                 tokens = line.strip().split()
                 if len(tokens[0].split("_"))>1:
-                    name = "_".join(tokens[0].split('_')[:4])
+                    name = tokens[0] #"_".join(tokens[0].split('_')[:4])
                 else:
                     name = tokens[0]
                 contig_dict[name].hits.append(BHit(

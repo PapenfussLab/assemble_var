@@ -1,0 +1,234 @@
+---
+title: "Investigating SoapDeNovo-Trans Assembly"
+author: "Gerry Tonkin-Hill"
+date: "31/8/2015"
+output: html_document
+---
+```{r, echo=FALSE}
+library(DistributionUtils)
+library(scales)
+
+asinh_trans <- function(){
+  trans_new(name = 'asinh', transform = function(x) asinh(x), 
+            inverse = function(x) sinh(x))
+}
+
+
+mytheme <- function (base_size = 12, base_family = "") 
+{
+  theme_grey(base_size = base_size, base_family = base_family) %+replace% 
+    theme(axis.text = element_text(size = rel(2), angle = 0),strip.text = element_text(size=25), axis.ticks = element_line(colour = "black"), axis.title=element_text(size=27),
+          legend.key = element_rect(colour = "grey80"), panel.background = element_rect(fill = "white", 
+                   colour = NA), panel.border = element_rect(fill = NA, 
+                           colour = "grey50"), panel.grid.major = element_line(colour = "grey90", 
+                                     size = 0.2), panel.grid.minor = element_line(colour = "grey98", 
+                                         size = 0.5), strip.background = element_rect(fill = "grey80", 
+                                                                                                                                                                                                                                                                                colour = "grey50", size = 0.2))
+}
+
+mybartheme <- function (base_size = 12, base_family = "") 
+{
+  theme_grey(base_size = base_size, base_family = base_family) %+replace% 
+    theme(axis.text = element_text(size = rel(1.5), angle = 90), axis.ticks = element_line(colour = "black"), axis.title=element_text(size=18),
+          legend.key = element_rect(colour = "grey80"), panel.background = element_rect(fill = "white", 
+                   colour = NA),
+                      legend.title=element_blank(), legend.text = element_text(size = 16),
+                        panel.border = element_rect(fill = NA, 
+                           colour = "grey50"), panel.grid.major = element_line(colour = "grey90", 
+                                     size = 0.2), panel.grid.minor = element_line(colour = "grey98", 
+                                         size = 0.5), strip.background = element_rect(fill = "grey80", 
+                                                                                                                                                                                                                                                                                colour = "grey50", size = 0.2))
+}
+
+
+```
+
+```{r}
+library(ggplot2)
+library(reshape)
+plot_contigs <- function(blastData, length_filt, identity_filt, var_gene_lengths){
+  # blastData <-EIC_processed_contigs
+  #first filter out unmatched contigs and convert types
+  blastData <- data.frame(subset(blastData, sequence.id != '-'))
+  blastData$alignment.length <-as.numeric(as.character(blastData$alignment.length))
+  blastData$s..start <-as.numeric(as.character(blastData$s..start))
+  blastData$s..end <-as.numeric(as.character(blastData$s..end))
+  blastData$q..start <-as.numeric(as.character(blastData$q..start))
+  blastData$q..end <-as.numeric(as.character(blastData$q..end))
+  blastData$percent.identity <-as.numeric(as.character(blastData$percent.identity))
+  
+  #now filter out hits we aren't interested in
+  #blastData <- subset(blastData, alignment.length > length_filt) #throw away contigs less than 3 reads ~ length residues long
+  #blastData <- subset(blastData, alignment.length > 800) #throw away contigs less than 3 reads ~ length residues long
+  #blastData <- subset(blastData, percent.identity > identity_filt) #throw away alignments that share less than x%
+  
+  #now split into seperate data frames for each database
+  var_hits <- subset(blastData, grepl("blastHits_Full_var_rask2010*",data.base.name))
+  var_hits <- subset(var_hits, alignment.length > length_filt) #throw away contigs less than 3 reads ~ length residues long
+  var_hits <- subset(var_hits, percent.identity > identity_filt) #throw away alignments that share less than x%
+  
+  #var_hits <-subset(var_hits, (sequence.id == 'IT4var04') | (sequence.id == 'IT4var08'))
+  human_hits <- subset(blastData, grepl("blastHits_human_reference*",data.base.name))
+  Pf3D7_hits <- subset(blastData, grepl("blastHits_Pf3D7_reference*",data.base.name))
+  Pf3D7_hits <- subset(Pf3D7_hits, alignment.length > 100) #throw away contigs less than 3 reads ~ length residues long
+  Pf3D7_hits <- subset(Pf3D7_hits, percent.identity > 85) #throw away alignments that share less than x%
+  
+  #filter out human and Pf3D7 contigs that aren't matched to any var genes
+  var_contigs <- unique(var_hits$contig.id)
+  human_hits <- subset(human_hits, contig.id %in% var_contigs)
+  Pf3D7_hits <- subset(Pf3D7_hits, contig.id %in% var_contigs)
+  
+  #now annoying stuff so ggplot doesnt get upset (give each contig a different height?)
+  ydf <- data.frame(contig.id=unique(var_hits$contig.id) , y=as.numeric(factor(unique(var_hits$contig.id))))
+  var_hits <- merge(var_hits, ydf, by="contig.id")
+  human_hits <- merge(human_hits, ydf, by="contig.id")
+  Pf3D7_hits <- merge(Pf3D7_hits, ydf, by="contig.id")
+  
+  
+  #Now generate the underlying contigs (full length)
+  contig <- var_hits
+  contig$s..start <- contig$s..start - contig$q..start
+  contig$s..end <- contig$s..start+contig$contig.length
+  
+   #now change the Pf3D7 sequence to be in terms of the var reference VERY HACKY
+  diff <- data.frame(contig.id=contig$contig.id, diff=contig$s..start, diff_seq=contig$sequence.id)
+  diff <- subset(diff, !duplicated(contig.id))
+  diff <- merge(diff, Pf3D7_hits, by="contig.id")
+  
+  Pf3D7_hits$s..start <- diff$diff  + Pf3D7_hits$q..start
+  Pf3D7_hits$s..end <- diff$diff + Pf3D7_hits$q..end
+  Pf3D7_hits$sequence.id <- diff$diff_seq
+  
+  #get the gene lengths from rask data
+  var_gene_lengths <- var_gene_lengths[var_gene_lengths$sequence.id %in% intersect(var_gene_lengths$sequence.id, contig$sequence.id),]
+  
+  
+  
+  gg <- ggplot(data=contig, aes(xmin = s..start, xmax = s..end, ymin = y, ymax = y+1, fill=factor(contig.id))) + geom_rect( alpha=0.4)
+  gg <- gg + geom_rect(data=var_hits, aes(xmin = s..start, xmax = s..end, ymin = y, ymax = y+1, fill=factor(contig.id), labels = rpk))
+  #gg <- gg + geom_rect(data=Pf3D7_hits, aes(xmin = s..start, xmax = s..end, ymin = y, ymax = y+1), color="black", alpha=0.5)
+  
+  gg <- gg + geom_text(data=var_hits, aes(x=s..start+(s..end-s..start)/2, y=y+(y+1-y)/2, label=paste(contig.id,rpk, sep=" ")), size=8) 
+  gg <- gg + geom_vline(data = var_gene_lengths, aes(xintercept = gene.length))
+  gg <- gg + facet_wrap(~sequence.id)
+  gg <- gg + xlab("location on reference sequence")
+  gg <- gg + ylab("") + scale_y_continuous(breaks=NULL)
+  gg <- gg + mytheme()
+  print(gg)
+  #paste(percent.identity,mismatches,gap.opens, sep=" ")
+  rpk_counts <- aggregate(. ~ sequence.id, data=var_hits, sum)
+  rpk_counts <- rpk_counts[,(names(rpk_counts) %in% c('sequence.id','rpk'))]
+  names(rpk_counts) <- c("var.name", "contig.count")
+  return(rpk_counts)
+}
+```
+
+Load Data
+
+```{r}
+#oases approach data
+# EIC_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/filtered_contigs/EIC/analytics_output.txt")
+# ECS_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/filtered_contigs/ECS/analytics_output.txt")
+# CS2_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/filtered_contigs/CS2/analytics_output.txt")
+
+# #soapdeNove-trans contig data
+EIC_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g//assembly_testing/SoapDeNovoAttempt/EICv2-30-10-14_S14_L001/analytics_output.txt")
+ECS_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/ECS_S27_L002/analytics_output.txt")
+CS2_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/CS2_S25_L002/analytics_output.txt")
+
+#expression data
+var_expressions_mike <- read.csv("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/var_expressions_mike.csv")
+
+#read count data
+read_counts_against_IT4_genes <- read.csv("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/read_counts_against_IT4_genes.csv")
+CS2_read_counts <- data.frame('var name'=read_counts_against_IT4_genes$CS2, 'counts'=read_counts_against_IT4_genes$counts)
+ECS_read_counts <- data.frame('var name'=read_counts_against_IT4_genes$ECS, 'counts'=read_counts_against_IT4_genes$counts.1)
+EIC_read_counts <- data.frame('var name'=read_counts_against_IT4_genes$EIC, 'counts'=read_counts_against_IT4_genes$counts.2)
+
+#gene length data
+var_gene_lengths <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/find_var_genes/assemble_var/data/var_rask_lengths.txt", header=F)
+colnames(var_gene_lengths) <- c("sequence.id", "gene.length")
+var_gene_lengths <- data.frame(var_gene_lengths)
+```
+
+For the contig plots we restrict the contigs to those that are longer than 1000 residues and share more than 95% similarity with the reference.
+Any contig that has overlapped with human, falciparum or vivax (non-var) by more than 30% has also been removed.
+In each of the contig plots below the lighter shaded blocks represent the contigs whilst the dark colouring represents those parts of the contigs that have aligned to the reference. If contigs map to more than one reference gene they can appear more than once.
+
+Lets look at a plot of the contigs for ECS. 
+
+```{r, fig.height=12, fig.width=20}
+contig_counts <- plot_contigs(ECS_processed_contigs, 1000, 95, var_gene_lengths)
+```
+
+For the expression plots I first aligned all the reads for each sample onto all the IT4var genes. This is reffered to as 'whole gene count'. I then aligned all the reads for each sample onto the contigs output by our assembly pipeline. This is reffered to as 'contig count'. Finally expression count are the 2exp-deltadeltaCt numbers from the quantification assay. All these counts are normalised and then plotted on a log10 scale. Thus each point on the y-axis can be interpreted as 0.1% of the total for that count type and that sample.
+
+plot expression for ECS
+```{r, fig.width=20}
+ecs_df <- merge(var_expressions_mike, ECS_read_counts, by='var.name')
+ecs_df <- ecs_df[,!(names(ecs_df) %in% c('CS2','EIC'))]
+ecs_df$counts <- ecs_df$counts/sum(ecs_df$counts)
+ecs_df$ECS <- ecs_df$ECS/sum(ecs_df$ECS)
+ecs_df <- merge(ecs_df, contig_counts, all.x=TRUE, by='var.name')
+ecs_df$contig.count[is.na(ecs_df$contig.count)] <- 0
+ecs_df$contig.count <- ecs_df$contig.count/sum(ecs_df$contig.count)
+names(ecs_df) <- c('Rask_name','Expression_name','expression count','whole gene count','contig count')
+ecs_df2 <- melt(ecs_df, id=c('Rask_name','Expression_name'))
+#ecs_df2$value[1000*ecs_df2$value < 1] <- 1/1000
+ecs <- ggplot(ecs_df2, aes(Rask_name, fill=factor(variable), weight=100*value)) + geom_bar(position="dodge")
+ecs <- ecs + mybartheme() + scale_y_continuous(trans = 'asinh', breaks=c(1,10,100))
+ecs <- ecs + ylab("Proportion of total expression\n%") + xlab("Gene Name")
+ecs
+```
+
+Lets look at a plot of the contigs for CS2
+
+```{r, fig.height=24, fig.width=40}
+contig_counts <- plot_contigs(CS2_processed_contigs, 1000, 95, var_gene_lengths)
+```
+
+plot expression for CS2
+```{r, fig.width=20}
+cs2_df <- merge(var_expressions_mike, CS2_read_counts, by='var.name')
+cs2_df <- cs2_df[,!(names(cs2_df) %in% c('ECS','EIC'))]
+cs2_df$counts <- cs2_df$counts/sum(cs2_df$counts)
+cs2_df$CS2 <- cs2_df$CS2/sum(cs2_df$CS2)
+cs2_df <- merge(cs2_df, contig_counts, all.x=TRUE, by='var.name')
+cs2_df$contig.count[is.na(cs2_df$contig.count)] <- 0
+cs2_df$contig.count <- cs2_df$contig.count/sum(cs2_df$contig.count)
+names(cs2_df) <- c('Rask_name','Expression_name','expression count','whole gene count','contig count')
+cs2_df2 <- melt(cs2_df, id=c('Rask_name','Expression_name'))
+#cs2_df2$value[1000*cs2_df2$value < 1] <- 1/1000
+cs2 <- ggplot(cs2_df2, aes(Rask_name, fill=factor(variable), weight=100*value)) + geom_bar(position="dodge")
+cs2 <- cs2 + scale_y_continuous(limits=c(0,NA))
+cs2 <- cs2 + mybartheme() + scale_y_continuous(trans = 'asinh', breaks=c(1,10,100))
+cs2 <- cs2 + ylab("Proportion of total expression\n%") + xlab("Gene Name")
+cs2
+```
+
+
+Lets look at a plot of the contigs for EIC
+As their was a higher rate of similarities in EIC I've upped the similarity threshold to 97%
+
+```{r, fig.height=40, fig.width=80}
+contig_counts <- plot_contigs(EIC_processed_contigs, 1000, 97, var_gene_lengths)
+```
+
+plot expression for EIC
+```{r, fig.width=20}
+eic_df <- merge(var_expressions_mike, EIC_read_counts, by='var.name')
+eic_df <- eic_df[,!(names(eic_df) %in% c('ECS','CS2'))]
+eic_df$counts <- eic_df$counts/sum(eic_df$counts)
+eic_df$EIC <- eic_df$EIC/sum(eic_df$EIC)
+eic_df <- merge(eic_df, contig_counts, all.x=TRUE, by='var.name')
+eic_df$contig.count[is.na(eic_df$contig.count)] <- 0
+eic_df$contig.count <- eic_df$contig.count/sum(eic_df$contig.count)
+names(eic_df) <- c('Rask_name','Expression_name','expression count','whole gene count','contig count')
+eic_df2 <- melt(eic_df, id=c('Rask_name','Expression_name'))
+# eic_df2$value[1000*eic_df2$value < 1] <- 1/1000
+eic <- ggplot(eic_df2, aes(Rask_name, fill=factor(variable), weight=100*value)) + geom_bar(position="dodge")
+eic <- eic + scale_y_continuous(limits=c(0,NA))
+eic <- eic + mybartheme() + scale_y_continuous(trans = 'asinh', breaks=c(1,10,100))
+eic <- eic + ylab("Proportion of total expression\n%") + xlab("Gene Name")
+eic
+```
