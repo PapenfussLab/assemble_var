@@ -365,7 +365,7 @@ def  digi_norm(single, paired, outputdir, verbose=False):
 
     norm_cmd = (script
         + " -C 20 -k 20 -N 4 -x 2e9"
-        + " -o " + outputdir + "normalised_single.fa"
+        + " -o " + outputdir + "normalised_single.fq"
         + " " + single)
     if verbose:
         print norm_cmd
@@ -374,7 +374,7 @@ def  digi_norm(single, paired, outputdir, verbose=False):
     norm_cmd = (script
         + " -C 20 -k 20 -N 4 -x 2e9"
         + " -p"
-        + " -o " + outputdir + "normalised_paired.fa"
+        + " -o " + outputdir + "normalised_paired.fq"
         + " " + paired)
     if verbose:
         print norm_cmd
