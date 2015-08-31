@@ -38,7 +38,7 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
 
     if verbose:
         print trim_cmd
-    # check_call(trim_cmd, shell=True)
+    check_call(trim_cmd, shell=True)
 
 
     return (outputdir + os.path.splitext(os.path.basename(inputfile))[0]+"_val_1.fq"
@@ -62,7 +62,7 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
         if verbose:
             print index_cmd
         #first build indices for subread program
-        # check_call(index_cmd, shell=True)
+        check_call(index_cmd, shell=True)
 
 
 
@@ -81,7 +81,7 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
     if verbose:
         print align_cmd
     #now align read to reference
-    # check_call(align_cmd, shell=True)
+    check_call(align_cmd, shell=True)
 
     return outputdir + "alignment.sam"
 
@@ -105,9 +105,9 @@ def convert_to_bam_create_index(reference, filename, verbose=False):
         print sort_cmd
         print index_cmd
 
-    # check_call(sam_cmd, shell=True)
-    # check_call(sort_cmd, shell=True)
-    # check_call(index_cmd, shell=True)
+    check_call(sam_cmd, shell=True)
+    check_call(sort_cmd, shell=True)
+    check_call(index_cmd, shell=True)
 
     return ".".join(filename.split(".")[:-1]) + "_sort.bam"
 
@@ -129,7 +129,7 @@ def extract_possible_var_reads(bamfile, outputdir, varfiles=None, verbose=False)
             )
         if verbose:
             print sam_cmd
-        # check_call(sam_cmd, shell=True)
+        check_call(sam_cmd, shell=True)
         count+=1
 
     #now extract reads that have aligned to the var regions
@@ -142,7 +142,7 @@ def extract_possible_var_reads(bamfile, outputdir, varfiles=None, verbose=False)
             )
         if verbose:
             print bed_cmd
-        # check_call(bed_cmd, shell=True)
+        check_call(bed_cmd, shell=True)
         count+=1
 
     if len(varfiles)<2:
@@ -170,9 +170,9 @@ def extract_possible_var_reads(bamfile, outputdir, varfiles=None, verbose=False)
         print merge_cmd
         print sort_cmd
         print bamtofastq_cmd
-    # check_call(merge_cmd, shell=True)
-    # check_call(sort_cmd, shell=True)
-    # check_call(bamtofastq_cmd, shell = True)
+    check_call(merge_cmd, shell=True)
+    check_call(sort_cmd, shell=True)
+    check_call(bamtofastq_cmd, shell = True)
 
     return outputdir + "extracted_unpaired.fq", outputdir + "extracted_paired.fq"
 
@@ -185,7 +185,7 @@ def merge_with_pear(single_seq, paired_seq, outputdir, verbose=False):
     if verbose:
         print split_cmd
 
-    # check_call(split_cmd, shell=True)
+    check_call(split_cmd, shell=True)
 
     #now run PEAR
     outname = ".".join(paired_seq.split(".")[:-1]) + "PEAR"
@@ -207,7 +207,7 @@ def merge_with_pear(single_seq, paired_seq, outputdir, verbose=False):
         )
     if verbose:
         print merge_cmd
-    # check_call(merge_cmd, shell=True)
+    check_call(merge_cmd, shell=True)
 
     #Now merge the signle reads together
     cat_cmd = ("cat " + single_seq
@@ -215,7 +215,7 @@ def merge_with_pear(single_seq, paired_seq, outputdir, verbose=False):
         + " > " + outputdir + "singlePear.fastq")
     if verbose:
         print cat_cmd
-    # check_call(cat_cmd, shell=True)
+    check_call(cat_cmd, shell=True)
 
     return outputdir + "singlePear.fastq", outputdir + "pairedPear.fastq"
 
@@ -263,7 +263,6 @@ def assemble_paired_reads(fasta_single, fasta_paired, outputdir
     if verbose:
         print assemble_cmd
     check_call(assemble_cmd, shell=True)
-    # check_call("mv assembly* " + outputdir, shell=True)
 
     return "assembly"
 
@@ -367,7 +366,7 @@ def  digi_norm(single, paired, outputdir, verbose=False):
         + " " + single)
     if verbose:
         print norm_cmd
-    # check_call(norm_cmd, shell=True)
+    check_call(norm_cmd, shell=True)
 
     norm_cmd = (script
         + " -C 20 -k 20 -N 4 -x 2e9"
@@ -376,7 +375,7 @@ def  digi_norm(single, paired, outputdir, verbose=False):
         + " " + paired)
     if verbose:
         print norm_cmd
-    # check_call(norm_cmd, shell=True)
+    check_call(norm_cmd, shell=True)
 
     return outputdir + "normalised_single.fq", outputdir + "normalised_paired.fq"
 
