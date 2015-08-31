@@ -63,9 +63,9 @@ def build(options):
     else:
 
         folder_prefix = thrd.assemble_paired_reads(single_reads, paired_reads
-            , options.outputdir, options.ins_length, options.verbose)
+            , outputdir, options.ins_length, options.verbose)
 
-        transcript_file_61 = thrd.filter_Locus_1(options.outputdir
+        transcript_file_61 = thrd.filter_Locus_1(outputdir
             , folder_prefix, options.verbose)
 
 

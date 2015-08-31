@@ -65,7 +65,7 @@ class Contig:
 def generate_summary(bamfile, outputdir, contig_file
     , blast_files=[]):
     blast_names = [os.path.splitext(os.path.basename(name))[0] for name in blast_files]
-    
+
     #first create contig dictionary
     contig_dict = {}
     for h,s in FastaReader(contig_file):
@@ -75,7 +75,7 @@ def generate_summary(bamfile, outputdir, contig_file
         else:
             contig_name = h
         contig_dict[contig_name] = Contig(contig_name, len(s))
-    
+
     #now add in the rpk info
     samfile = Samfile(bamfile, "rb")
     for h in samfile.references:
@@ -110,7 +110,7 @@ def generate_summary(bamfile, outputdir, contig_file
         id_ = 0
         for contig in contig_dict:
             if not contig_dict[contig].hits: # it hasn't matched any of the databases
-                outfile.write("\t".join([str(id_), contig_dict[contig].name, str(contig_dict[contig].length)] 
+                outfile.write("\t".join([str(id_), contig_dict[contig].name, str(contig_dict[contig].length)]
                     + ["-"]*12 + [str(contig_dict[contig].rpk)])+"\n")
                 id_+=1
             else:
