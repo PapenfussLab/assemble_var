@@ -1,5 +1,5 @@
 ---
-title: "Investigating SoapDeNovo-Trans Assembly"
+title: "Investigating Oases Assembly"
 author: "Gerry Tonkin-Hill"
 date: "31/8/2015"
 output: html_document
@@ -123,13 +123,81 @@ plot_contigs <- function(blastData, length_filt, identity_filt, var_gene_lengths
 }
 ```
 
+Function to calculate redundancy
+```{r}
+library(data.table)
+library(IRanges)
+library(GenomicRanges)
+redundancy <- function(blastData, length_filt, var_gene_lengths, identity_filt=97){
+#   blastData <-CS2_processed_contigs
+  #first filter out unmatched contigs and convert types
+  blastData <- data.frame(subset(blastData, sequence.id != '-'))
+  blastData$alignment.length <- as.numeric(as.character(blastData$alignment.length))
+  blastData$s..start <- as.numeric(as.character(blastData$s..start))
+  blastData$s..end <- as.numeric(as.character(blastData$s..end))
+  blastData$q..start <- as.numeric(as.character(blastData$q..start))
+  blastData$q..end <- as.numeric(as.character(blastData$q..end))
+  blastData$percent.identity <- as.numeric(as.character(blastData$percent.identity))
+  blastData$alignment.length <- as.numeric(as.character(blastData$alignment.length))
+  blastData$bit.score <- as.numeric(as.character(blastData$bit.score))
+  
+  #now split into seperate data frames for each database
+  var_hits <- subset(blastData, grepl("blastHits_Full_var_rask2010*",data.base.name))
+  var_hits <- subset(var_hits, alignment.length > length_filt) #throw away contigs less than 3 reads ~ length residues long
+  var_hits <- subset(var_hits, percent.identity > identity_filt) #throw away alignments that share less than x%
+  
+  #var_hits <-subset(var_hits, (sequence.id == 'IT4var04') | (sequence.id == 'IT4var08'))
+  human_hits <- subset(blastData, grepl("blastHits_human_reference*",data.base.name))
+  Pf3D7_hits <- subset(blastData, grepl("blastHits_Pf3D7_reference*",data.base.name))
+  Pf3D7_hits <- subset(Pf3D7_hits, alignment.length > 100) #throw away contigs less than 3 reads ~ length residues long
+  Pf3D7_hits <- subset(Pf3D7_hits, percent.identity > 85) #throw away alignments that share less than x%
+  
+  #filter out human and Pf3D7 contigs that aren't matched to any var genes
+  var_contigs <- unique(var_hits$contig.id)
+  human_hits <- subset(human_hits, contig.id %in% var_contigs)
+  Pf3D7_hits <- subset(Pf3D7_hits, contig.id %in% var_contigs)
+  
+  #sort var hit by name then bit score
+  var_hits <- var_hits[with(var_hits, order(contig.id, bit.score, decreasing=TRUE)), ]
+  var_hits <- droplevels(var_hits)
+  #remove duplicated contigs which have overlapping query regions.
+  
+  VH <- as.data.table(var_hits)
+  VH$q..start <- VH$q..start+250
+  VH$q..end <- VH$q..end-250
+  VH[,group := { 
+      ir <-  IRanges(q..start, q..end);
+      subjectHits(findOverlaps(ir, reduce(ir), minoverlap=0))
+      },by=contig.id]
+  VH$q..start <- VH$q..start-250
+  VH$q..end <- VH$q..end+250
+ 
+  
+  
+  VH <- data.frame(VH)
+  VH <- VH[!duplicated(VH[,colnames(VH) %in% c('contig.id', 'group')]),]
+  VH$group <- NULL
+  
+  total.alignment <- sum(VH$alignment.length)
+
+  gr = GRanges(VH$sequence.id, 
+            IRanges(VH$s..start, VH$s..end), 
+                strand="*") 
+  re <- reduce(gr)
+  total.coverage <- sum(width(ranges(re)))
+  
+  redundancy <- total.alignment/total.coverage
+  return(redundancy)
+}
+```
+
 Load Data
 
 ```{r}
 #oases approach data
-# EIC_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/filtered_contigs/EIC/analytics_output.txt")
-# ECS_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/filtered_contigs/ECS/analytics_output.txt")
-# CS2_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/filtered_contigs/CS2/analytics_output.txt")
+# EIC_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/OASES_again/EICv2_OASES_again/analytics_output.txt")
+# ECS_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/OASES_again/ECS_S27_L002/analytics_output.txt")
+# CS2_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/OASES_again/CS2_S25_L002/analytics_output.txt")
 
 # #soapdeNove-trans contig data
 EIC_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g//assembly_testing/SoapDeNovoAttempt/EICv2-30-10-14_S14_L001/analytics_output.txt")
@@ -161,6 +229,15 @@ Lets look at a plot of the contigs for ECS.
 contig_counts <- plot_contigs(ECS_processed_contigs, 1000, 95, var_gene_lengths)
 ```
 
+Next we look at the redundancy of this assembly. Redundancy is calculated by first filtering contigs to those that align to VAR with a length of at least 800 and identity of 97. We then only allow each region of each transcript to only map to one reference region. This is done rather harshly in that if two blast hit overlap from on the same region of the transcript we take the one with the high bit score. Reduncdancy is then calculated as
+$$
+\frac{\text{total alignment length}}{\text{total number of nucleotide in reference that are covered by hits}}  
+$$
+
+```{r}
+redundancy(ECS_processed_contigs, 1000, var_gene_lengths, 95)
+```
+
 For the expression plots I first aligned all the reads for each sample onto all the IT4var genes. This is reffered to as 'whole gene count'. I then aligned all the reads for each sample onto the contigs output by our assembly pipeline. This is reffered to as 'contig count'. Finally expression count are the 2exp-deltadeltaCt numbers from the quantification assay. All these counts are normalised and then plotted on a log10 scale. Thus each point on the y-axis can be interpreted as 0.1% of the total for that count type and that sample.
 
 plot expression for ECS
@@ -185,6 +262,12 @@ Lets look at a plot of the contigs for CS2
 
 ```{r, fig.height=24, fig.width=40}
 contig_counts <- plot_contigs(CS2_processed_contigs, 1000, 95, var_gene_lengths)
+```
+
+Redundancy
+
+```{r}
+redundancy(CS2_processed_contigs, 1000, var_gene_lengths, 95)
 ```
 
 plot expression for CS2
@@ -214,6 +297,12 @@ As their was a higher rate of similarities in EIC I've upped the similarity thre
 contig_counts <- plot_contigs(EIC_processed_contigs, 1000, 97, var_gene_lengths)
 ```
 
+Redundancy
+
+```{r}
+redundancy(EIC_processed_contigs, 1000, var_gene_lengths, 95)
+```
+
 plot expression for EIC
 ```{r, fig.width=20}
 eic_df <- merge(var_expressions_mike, EIC_read_counts, by='var.name')
@@ -232,3 +321,22 @@ eic <- eic + mybartheme() + scale_y_continuous(trans = 'asinh', breaks=c(1,10,10
 eic <- eic + ylab("Proportion of total expression\n%") + xlab("Gene Name")
 eic
 ```
+
+Now we calculate some summary statistics for this comparison. First the number of IT4var genes found and the total found by qPCR above 1e-3.
+
+```{r}
+countQPCRExpressed <- sum(eic_df$'expression count'>1e-3)
+countContigExpressed <- sum(eic_df$'contig count'>0)
+```
+
+A total of `r countQPCRExpressed` were found above a threshold of $1e-3$ by qPCR. After assembly a total of `r countContigExpressed` genes were identified.
+
+Now we look at the overall similarity of coverage. This is rather sensitive to single genes with large differences in exression profiles between the methods.
+
+```{r}
+qPCR <- eic_df$'expression count'
+qPCR[qPCR<1e-3] <- 0
+contig <- eic_df$'contig count'
+```
+
+The mean percentage difference in expression profiles is `r mean(abs(qPCR-contig))*100`
