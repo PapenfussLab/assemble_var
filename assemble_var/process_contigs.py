@@ -128,26 +128,38 @@ def generate_summary(bamfile, outputdir, contig_file
 
     return outputdir + "analytics_output.txt"
 
+def reNameContigs(contig_file, outputdir):
+    renamed = outputdir + "renamed_transcripts.fa"
+    with open(renamed , 'w') as outfile:
+        for h,s in FastaReader(contig_file):
+            h = h.split()[0]
+            if h.split("_") > 3: #oases transcript
+                h = h.split("_")
+                h = "_".join(h[0], h[1], h[3])
+            outfile.write(">" + h + "\n")
+            outfile.write(s + "\n")
 
 def analyse_contigs(contig_file, read1, read2, outputdir
    , fasta_ref_files=[], verbose=False):
     #first prepare blast files for analysis
 
+    renamedContigs = reNameContigs(contig_file)
+
     blast_files = []
     for reference in fasta_ref_files:
-        blast_files.append(run_blast(reference, contig_file, outputdir
+        blast_files.append(run_blast(reference, renamedContigs, outputdir
             , verbose))
 
     #now align reads to contigs
-    samfile = align_w_subread(read1, read2, contig_file, outputdir, verbose)
+    samfile = align_w_subread(read1, read2, renamedContigs, outputdir, verbose)
 
     #now convert to bam
-    bamfile = convert_to_bam_create_index(contig_file, samfile, verbose)
+    bamfile = convert_to_bam_create_index(renamedContigs, samfile, verbose)
 
     # bamfile="notused"
     #now compute analytics
     outfile = generate_summary(bamfile, outputdir
-        , contig_file, blast_files)
+        , renamedContigs, blast_files)
 
     return outfile
 
@@ -191,6 +203,16 @@ def main():
 
     (options, args) = parser.parse_args()
 
+    try:
+        os.mkdir(options.outputdir)
+    except OSError, e:
+        if e.errno != 17: #ignores error if folders has already been created.
+            raise
+        pass
+
+    curr_dir = os.getcwd()
+    os.chdir(options.outputdir)
+
     #trim contigs that are less than length
     trim_contig = trim_contigs(options.length, options.contig_file
         , options.outputdir)
@@ -200,6 +222,7 @@ def main():
         , options.outputdir, options.ref_files
         , options.verbose)
 
+    os.chdir(curr_dir)
 
 if __name__ == '__main__':
     main()
