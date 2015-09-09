@@ -1,9 +1,17 @@
 ---
-title: "Investigating Oases Assembly"
+title: "Investigating SoapDeNovo-Trans Cap3 Assembly"
 author: "Gerry Tonkin-Hill"
 date: "31/8/2015"
 output: html_document
 ---
+
+Load input files
+```{r}
+EIC_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo/EICv2/analytics_output.txt")
+ECS_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo/ECS/analytics_output.txt")
+CS2_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo/CS2/analytics_output.txt")
+```
+
 ```{r, echo=FALSE}
 library(DistributionUtils)
 library(scales)
@@ -191,19 +199,9 @@ redundancy <- function(blastData, length_filt, var_gene_lengths, identity_filt=9
 }
 ```
 
-Load Data
+Load more data 
 
 ```{r}
-#oases approach data
-# EIC_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/OASES_again/EICv2_OASES_again/analytics_output.txt")
-# ECS_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/OASES_again/ECS_S27_L002/analytics_output.txt")
-# CS2_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/OASES_again/CS2_S25_L002/analytics_output.txt")
-
-# #soapdeNove-trans contig data
-EIC_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g//assembly_testing/SoapDeNovoAttempt/EICv2-30-10-14_S14_L001/analytics_output.txt")
-ECS_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/ECS_S27_L002/analytics_output.txt")
-CS2_processed_contigs <- read.delim("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/SoapDeNovoAttempt/CS2_S25_L002/analytics_output.txt")
-
 #expression data
 var_expressions_mike <- read.csv("/wehisan/home/allstaff/t/tonkin-hill.g/assembly_testing/counts/var_expressions_mike.csv")
 
@@ -226,7 +224,7 @@ In each of the contig plots below the lighter shaded blocks represent the contig
 Lets look at a plot of the contigs for ECS. 
 
 ```{r, fig.height=12, fig.width=20}
-contig_counts <- plot_contigs(ECS_processed_contigs, 1000, 95, var_gene_lengths)
+contig_counts <- plot_contigs(ECS_processed_contigs, 800, 95, var_gene_lengths)
 ```
 
 Next we look at the redundancy of this assembly. Redundancy is calculated by first filtering contigs to those that align to VAR with a length of at least 800 and identity of 97. We then only allow each region of each transcript to only map to one reference region. This is done rather harshly in that if two blast hit overlap from on the same region of the transcript we take the one with the high bit score. Reduncdancy is then calculated as
@@ -235,7 +233,7 @@ $$
 $$
 
 ```{r}
-redundancy(ECS_processed_contigs, 1000, var_gene_lengths, 95)
+redundancy(ECS_processed_contigs, 800, var_gene_lengths, 95)
 ```
 
 For the expression plots I first aligned all the reads for each sample onto all the IT4var genes. This is reffered to as 'whole gene count'. I then aligned all the reads for each sample onto the contigs output by our assembly pipeline. This is reffered to as 'contig count'. Finally expression count are the 2exp-deltadeltaCt numbers from the quantification assay. All these counts are normalised and then plotted on a log10 scale. Thus each point on the y-axis can be interpreted as 0.1% of the total for that count type and that sample.
@@ -261,13 +259,13 @@ ecs
 Lets look at a plot of the contigs for CS2
 
 ```{r, fig.height=24, fig.width=40}
-contig_counts <- plot_contigs(CS2_processed_contigs, 1000, 95, var_gene_lengths)
+contig_counts <- plot_contigs(CS2_processed_contigs, 800, 95, var_gene_lengths)
 ```
 
 Redundancy
 
 ```{r}
-redundancy(CS2_processed_contigs, 1000, var_gene_lengths, 95)
+redundancy(CS2_processed_contigs, 800, var_gene_lengths, 95)
 ```
 
 plot expression for CS2
@@ -294,13 +292,13 @@ Lets look at a plot of the contigs for EIC
 As their was a higher rate of similarities in EIC I've upped the similarity threshold to 97%
 
 ```{r, fig.height=40, fig.width=80}
-contig_counts <- plot_contigs(EIC_processed_contigs, 1000, 97, var_gene_lengths)
+contig_counts <- plot_contigs(EIC_processed_contigs, 800, 97, var_gene_lengths)
 ```
 
 Redundancy
 
 ```{r}
-redundancy(EIC_processed_contigs, 1000, var_gene_lengths, 95)
+redundancy(EIC_processed_contigs, 800, var_gene_lengths, 95)
 ```
 
 plot expression for EIC

@@ -9,10 +9,10 @@ BLAST_NT_DB = "/home/users/allstaff/tonkin-hill.g/find_var_genes/assemble_var/da
 
 
 def filter_length(contig_file, length_filter, fileName, outdir, verbose):
-  length_filter = outdir + fileName + "lenFilt.fa"
+  length_file = outdir + fileName + "lenFilt.fa"
 
   short_count = 0
-  with open(length_filter,'w') as outfile:
+  with open(length_file,'w') as outfile:
     for h,s in FastaReader(contig_file):
       if len(s)<length_filter:
         short_count+=1
@@ -23,7 +23,7 @@ def filter_length(contig_file, length_filter, fileName, outdir, verbose):
   if verbose:
     print short_count, " contigs removed as too short..."
 
-  return length_filter
+  return length_file
 
 
 def get_contaminants(fasta_ref_files, contig_file, fileName, percent_overlap
@@ -52,6 +52,7 @@ def get_contaminants(fasta_ref_files, contig_file, fileName, percent_overlap
       with open(blast_file, 'r') as bfile:
           for line in bfile:
               tokens = line.strip().split()
+              print tokens[0], line
               name = tokens[0]
               overlap = int(tokens[3])/float(len(contigs[name]))
               if overlap > percent_overlap:
