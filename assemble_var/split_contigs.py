@@ -7,6 +7,17 @@ from third_party_runners import run_blast
 
 BLAST_NT_DB = "/home/users/allstaff/tonkin-hill.g/find_var_genes/assemble_var/data/nt/nt"
 
+def reNameContigs(contig_file, fileName, outputdir):
+    renamed = outputdir + fileName + "renamed.fa"
+    with open(renamed , 'w') as outfile:
+        for h,s in FastaReader(contig_file):
+            h = h.split()[0]
+            if len(h.split("_")) > 4: #oases transcript
+                h = h.split("_")
+                h = "_".join([h[0], h[1], h[3]])
+            outfile.write(">" + h + "\n")
+            outfile.write(s + "\n")
+    return renamed
 
 def filter_length(contig_file, length_filter, fileName, outdir, verbose):
   length_file = outdir + fileName + "lenFilt.fa"
@@ -165,7 +176,9 @@ def split_contigs(contig_file, contaminant_refs, raskDB, min_length
   #get contig filenames for easy naming of new files
   fileName = os.path.splitext(os.path.basename(contig_file))[0]
 
-  filtered = filter_length(contig_file, min_length, fileName, outdir, verbose)
+  renamed = reNameContigs(contig_file, fileName, outdir)
+
+  filtered = filter_length(renamed, min_length, fileName, outdir, verbose)
 
   non_contaminant_file, contaminant_file = get_contaminants(contaminant_refs
     , filtered, fileName, perThreshold
