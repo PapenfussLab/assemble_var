@@ -464,10 +464,17 @@ q1=""" + fasta_paired + ".1\n"
 
     #now to combine the contig files
     outfile = outputdir + "combined_soapDeNovo.fa"
-    combine_cmd = "cat *.contig > " + outfile
-    if verbose:
-        print combine_cmd
-    check_call(combine_cmd, shell=True)
+
+    #now rename transcripts to include which Kmer run they came from and combine
+    # into one file
+    with open(outfile, 'w') as out:
+        for transcript_file in glob.glob("*.contig"):
+            fname = os.path.splitext(os.path.basename(contig_file))[0]
+            for h,s in FastaReader(transcript_file):
+                h=h.strip().split()
+                out.write((">" + h[0] + "_" + fname + " "
+                    + " ".join(h[1:]) + "\n")
+                out.write(s+"\n")
 
     #return to previous directory
     os.chdir(curr_dir)
