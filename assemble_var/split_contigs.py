@@ -2,6 +2,7 @@ import sys, os
 from mungo.fasta import FastaReader
 from collections import defaultdict
 from optparse import OptionParser
+from subprocess import check_call
 
 from third_party_runners import run_blast
 
@@ -63,7 +64,6 @@ def get_contaminants(fasta_ref_files, contig_file, fileName, percent_overlap
       with open(blast_file, 'r') as bfile:
           for line in bfile:
               tokens = line.strip().split()
-              print tokens[0], line
               name = tokens[0]
               overlap = int(tokens[3])/float(len(contigs[name]))
               if overlap > percent_overlap:
@@ -80,7 +80,7 @@ def get_contaminants(fasta_ref_files, contig_file, fileName, percent_overlap
 
   #now write contigs without contaminants to a file
   non_contaminant_file = outdir + fileName + "Non_contaminants.fa"
-  with open(outfile, 'w') as outfile:
+  with open(non_contaminant_file, 'w') as outfile:
       for contig in contigs:
         if contig not in bad_contigs:
           outfile.write(">" + contig + "\n")
@@ -96,7 +96,7 @@ def get_contaminants(fasta_ref_files, contig_file, fileName, percent_overlap
 def get_rask_var(raskFasta, contig_file, fileName, outdir, verbose):
 
   #run blast against the rask VAR genes
-  blast_out = run_blast(blastdb_file, contig_file, outdir, verbose)
+  blast_out = run_blast(raskFasta, contig_file, outdir, verbose)
 
   rask_hits = set()
   with open(blast_out , 'r') as blastfile:
@@ -134,7 +134,7 @@ def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
   #first run a special blast using the nt database
   blast_cmd = ("blastn "
       + "-evalue 10 "
-      + """-outfmt "6 qseqid sseqid  stitle length pident qstart qend sstart send evalue """
+      + """-outfmt "6 qseqid sseqid  stitle length pident qstart qend sstart send evalue" """
       # + "-num_alignments " + str(num_hits) + " "
       + "-num_threads 10 -max_target_seqs 3 "
       + "-db " + BLAST_NT_DB + " "
@@ -150,7 +150,7 @@ def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
   contigs = defaultdict(str)
   with open(blastOut, 'r') as blastfile:
     for line in blastfile:
-      line = line.strip().split()
+      line = line.strip().split("\t")
       contigs[line[0]] = (contigs[line[0]]
         +  " [" + line[2]
         + "_alignLen_" + line[3]
