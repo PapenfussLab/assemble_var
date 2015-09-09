@@ -7,7 +7,7 @@ from third_party_runners import run_blast
 
 
 def get_longest(contig_file, outfile, min_length):
-    #returns a dictionary of header sequence pairs of the longest contig in 
+    #returns a dictionary of header sequence pairs of the longest contig in
     #each locus
     locus_dict = defaultdict(list)
     contig_dict = {}
@@ -50,14 +50,14 @@ def filter_ref_with_blast(fasta_ref_files, contig_file, percent_overlap
 
     print "Number of contigs before filtering: ", len(contigs.keys())
 
-    #now run blast against the reference files which we want not to be 
+    #now run blast against the reference files which we want not to be
     #present in the data i.e. human
     blast_files = []
     for reference in fasta_ref_files:
         blast_files.append(run_blast(reference, contig_file, outdir
             , True))
 
-    #now iterate through blast results file removing contigs that have to 
+    #now iterate through blast results file removing contigs that have to
     #high a proportion of hits
     bad_contigs = set()
     for blast_file in blast_files:
@@ -95,7 +95,7 @@ def filter_contigs(contig_file, fasta_ref_files, percent_overlap
 
 def main():
     parser = OptionParser()
-    
+
 
     parser.add_option("", '--ref',
                   type='string', action='append',

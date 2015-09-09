@@ -138,6 +138,7 @@ def reNameContigs(contig_file, outputdir):
                 h = "_".join(h[0], h[1], h[3])
             outfile.write(">" + h + "\n")
             outfile.write(s + "\n")
+    return(renamed)
 
 def analyse_contigs(contig_file, read1, read2, outputdir
    , fasta_ref_files=[], verbose=False):

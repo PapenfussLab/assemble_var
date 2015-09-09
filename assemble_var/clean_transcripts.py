@@ -11,7 +11,7 @@ class Transcript:
     def __init__(self, name, sequence):
         self.name = name
         self.sequence = sequence
-        
+
 
 
 def remove_shorter_sequences(fasta_file, per_within_max, len_cutoff
@@ -34,7 +34,7 @@ def remove_shorter_sequences(fasta_file, per_within_max, len_cutoff
     with open(outputfile,'w') as outfile:
         for locus_name in locus_dict:
             for t in locus_dict[locus_name].transcripts:
-                if ((len(t.sequence)/float(locus_dict[locus_name].max_trans_length)) 
+                if ((len(t.sequence)/float(locus_dict[locus_name].max_trans_length))
                     < (1-per_within_max)): #too far away from the longest
                     continue
                 if len(t.sequence) < len_cutoff:
