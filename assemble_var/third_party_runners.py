@@ -70,6 +70,7 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
         + "subread-align "
         + " -d 50"
         + " -D 600"
+        + " -T 5"
         + " -i " + index
         + " -r " + read1
         + " -R " + read2

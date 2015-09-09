@@ -133,9 +133,9 @@ def reNameContigs(contig_file, outputdir):
     with open(renamed , 'w') as outfile:
         for h,s in FastaReader(contig_file):
             h = h.split()[0]
-            if h.split("_") > 3: #oases transcript
+            if len(h.split("_")) > 4: #oases transcript
                 h = h.split("_")
-                h = "_".join(h[0], h[1], h[3])
+                h = "_".join([h[0], h[1], h[3]])
             outfile.write(">" + h + "\n")
             outfile.write(s + "\n")
     return(renamed)
@@ -144,7 +144,7 @@ def analyse_contigs(contig_file, read1, read2, outputdir
    , fasta_ref_files=[], verbose=False):
     #first prepare blast files for analysis
 
-    renamedContigs = reNameContigs(contig_file)
+    renamedContigs = reNameContigs(contig_file, outputdir)
 
     blast_files = []
     for reference in fasta_ref_files:
