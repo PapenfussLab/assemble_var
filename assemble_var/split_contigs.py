@@ -129,7 +129,7 @@ def get_rask_var(raskFasta, contig_file, fileName, outdir, verbose):
 
 def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
 
-  blastOut = outdir + "nonRaskBlast.txt"
+  blastOut = outdir + fileName + "nonRaskBlast.txt"
 
   #first run a special blast using the nt database
   blast_cmd = ("blastn "
