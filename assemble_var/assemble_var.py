@@ -112,14 +112,14 @@ def main():
         , default=False, help="the insert length passed to oases")
 
     parser.add_option("", "--adapter", dest="adapter", default=False
-        , help="the adapter sequence to be passed to Trim Galore. Defaults to"
+        , help="the adapter sequence to be passed to Trim Galore. Defaults to "
             + "trim galore's default if not supplied.")
 
     parser.add_option("","--verbose", action="store_true", dest="verbose"
         , default=False, help="turns on more detailed output")
 
     parser.add_option("", "--pear", action="store_true", dest="pear"
-        , default=False, help="merge read pairs that overlap before oases.")
+        , default=False, help="merge read pairs that overlap before assembly.")
 
     parser.add_option("", "--norm", action="store_true", dest="norm"
         , default=False, help=("perform digital normalisation which decreases"
