@@ -8,11 +8,12 @@ The main program is **assembly_var.py** it takes as input:
 * Two paired end read files in fastq format
 
 It ouputs:
-* A fasta file with contigs. Further filtering may then be required to remove any remaining contaminants.
+* A fasta file with contigs. This is stored in the output directory in a file named **transcripts_assembled_final.fa**.  Further filtering may then be required to remove any remaining contaminants.
 
 
 ### assemble_var.py
 ```
+
 Options:
   -h, --help            show this help message and exit
   -r READ1, --read1=READ1
@@ -36,11 +37,12 @@ Options:
   --ins_length=INS_LENGTH
                         the insert length passed to oases
   --adapter=ADAPTER     the adapter sequence to be passed to Trim Galore.
-                        Defaults totrim galore's default if not supplied.
+                        Defaults to trim galore's default if not supplied.
   --verbose             turns on more detailed output
-  --pear                merge read pairs that overlap before oases.
+  --pear                merge read pairs that overlap before assembly.
   --norm                perform digital normalisation which decreases the
                         computational time required for assembly.
+  --soap                assemble reads using soapDenovo-trans.
 
 ```
 #### Usage Example
