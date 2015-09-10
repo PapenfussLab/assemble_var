@@ -1,5 +1,5 @@
 ---
-title: "Investigating SoapDeNovo-Trans Cap3 Assembly"
+title: "Investigating SoapDeNovo-Trans K51 No Filtering Assembly"
 author: "Gerry Tonkin-Hill"
 date: "31/8/2015"
 output: html_document
@@ -7,9 +7,9 @@ output: html_document
 
 Load input files
 ```{r}
-EIC_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo/EICv2/analytics_output.txt")
-ECS_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo/ECS/analytics_output.txt")
-CS2_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo/CS2/analytics_output.txt")
+EIC_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo_withoutFilter/K51/EICv2/analytics_output.txt")
+ECS_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo_withoutFilter/K51/ECS/analytics_output.txt")
+CS2_processed_contigs <- read.delim("/home/users/allstaff/tonkin-hill.g/assembly_testing/ComparisonForManuscript/SoapDeNovo_withoutFilter/K51/CS2/analytics_output.txt")
 ```
 
 ```{r, echo=FALSE}

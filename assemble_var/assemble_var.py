@@ -71,7 +71,7 @@ def build(options):
 
     thrd.assemble_contigs_cap3(transcript_file_61, options.outputdir
         , verbose=options.verbose
-        , outname="transcript_file_61_cap3.fa")
+        , outname="transcripts_assembled_final.fa")
 
     os.chdir(curr_dir)
 
