@@ -129,7 +129,8 @@ def get_rask_var(raskFasta, contig_file, fileName, outdir, verbose):
 
 def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
 
-  blastOut = outdir + fileName + "nonRaskBlast.txt"
+  contmainant_blastOut = outdir + fileName + "nonRaskBlast.txt"
+
 
   #first run a special blast using the nt database
   blast_cmd = ("blastn "
@@ -148,6 +149,7 @@ def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
 
   #now retrieve annotation information
   contigs = defaultdict(str)
+  contigs_perID = defaultdict(float)
   with open(blastOut, 'r') as blastfile:
     for line in blastfile:
       line = line.strip().split("\t")
@@ -156,16 +158,26 @@ def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
         + "_alignLen_" + line[3]
         + "_perID_" + line[4]
         + "] ")
+      contigs_perID[line[0]] = max(contigs_perID[line[0]], float(line[4]))
 
   #now re-write the fasta file with the annotations in the headers
   annotated = outdir + fileName + "nonRask_annotated.fa"
-  with open(annotated, 'w') as outfile:
+  unknown_blastOut = outdir + fileName + "unkonBlastForManualInspection.fa"
+
+  with open(annotated, 'w') as outfileKnown:
+    with open(unknown_blastOut, 'w') as outfileUnknoen:
     for h,s in FastaReader(contig_file):
       if h in contigs:
-        outfile.write(">" + h + " " + contigs[h] + "\n")
+        if contigs_perID[h] > 0.97:
+          outfileKnown.write(">" + h + " " + contigs[h] + "\n")
+          outfileKnown.write(s + "\n")
+          continue
+      if h in contigs:
+        outfileUnknoen.write(">" + h + " " + contigs[h] + "\n")
       else:
-        outfile.write(">" + h + " none\n")
-      outfile.write(s + "\n")
+        outfileUnknoen.write(">" + h + " none\n")
+      outfileUnknoen.write(s + "\n")
+
 
   return annotated
 
