@@ -129,7 +129,7 @@ def get_rask_var(raskFasta, contig_file, fileName, outdir, verbose):
 
 def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
 
-  contmainant_blastOut = outdir + fileName + "nonRaskBlast.txt"
+  blastOut = outdir + fileName + "nonRaskBlast.txt"
 
 
   #first run a special blast using the nt database
@@ -162,7 +162,7 @@ def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
 
   #now re-write the fasta file with the annotations in the headers
   annotated = outdir + fileName + "nonRask_annotated.fa"
-  unknown_blastOut = outdir + fileName + "unkonBlastForManualInspection.fa"
+  unknown_blastOut = outdir + fileName + "ForManualInspection.fa"
 
   with open(annotated, 'w') as outfileKnown:
     with open(unknown_blastOut, 'w') as outfileUnknoen:
