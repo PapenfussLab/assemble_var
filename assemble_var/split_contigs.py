@@ -168,7 +168,7 @@ def annotate_w_ntDB(contig_file, fileName, outdir, verbose):
     with open(unknown_blastOut, 'w') as outfileUnknoen:
       for h,s in FastaReader(contig_file):
         if h in contigs:
-          if contigs_perID[h] > 0.97:
+          if contigs_perID[h] > 97:
             outfileKnown.write(">" + h + " " + contigs[h] + "\n")
             outfileKnown.write(s + "\n")
             continue
