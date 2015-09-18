@@ -44,11 +44,10 @@ def build(options):
         single_reads, paired_reads = thrd.combine_paired(read1, read2, outputdir
             , options.verbose)
 
-    # single_reads, paired_reads = outputdir + "extracted_unpaired.fq", outputdir + "extracted_paired.fq"
-
-    if options.pear:
-        single_reads, paired_reads = thrd.merge_with_pear(single_reads
-            , paired_reads, outputdir, options.verbose)
+    if options.read2 != None:
+        if options.pear:
+            single_reads, paired_reads = thrd.merge_with_pear(single_reads
+                , paired_reads, outputdir, options.verbose)
 
     #now digital normalisation on the single_reads and paired reads seperately
     if options.norm:
@@ -83,7 +82,7 @@ def main():
     parser.add_option("-r", "--read1", dest="read1",
         help="first set of read pairs")
 
-    parser.add_option("-R", "--read2", dest="read2",
+    parser.add_option("-R", "--read2", dest="read2", default=None,
         help="second set of read pairs")
 
     parser.add_option("", "--reference", dest="reference"

@@ -21,25 +21,42 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
     #returns the filenames of the filtered reads
     scriptPath = getScriptPath()
 
-    trim_cmd = (scriptPath
-        + "/third-party/trim_galore/trim_galore "
-        + " --phred33 "
-        + " --paired "
-        + " --dont_gzip")
+    if inputfile2==None:
+        trim_cmd = (scriptPath
+            + "/third-party/trim_galore/trim_galore "
+            + " --phred33 "
+            + " --dont_gzip")
 
-    # if adapter:
-    #     trim_cmd = trim_cmd + " --adapter " + adapter
+        # if adapter:
+        #     trim_cmd = trim_cmd + " --adapter " + adapter
 
-    trim_cmd = (trim_cmd
-        + " --output_dir " + outputdir + " "
-        + inputfile + " "
-        + inputfile2
-        )
+        trim_cmd = (trim_cmd
+            + " --output_dir " + outputdir + " "
+            + inputfile
+            )
+    else:
+        trim_cmd = (scriptPath
+            + "/third-party/trim_galore/trim_galore "
+            + " --phred33 "
+            + " --paired "
+            + " --dont_gzip")
+
+        # if adapter:
+        #     trim_cmd = trim_cmd + " --adapter " + adapter
+
+        trim_cmd = (trim_cmd
+            + " --output_dir " + outputdir + " "
+            + inputfile + " "
+            + inputfile2
+            )
 
     if verbose:
         print trim_cmd
     check_call(trim_cmd, shell=True)
 
+    if inputfile2==None:
+        return (outputdir + os.path.splitext(os.path.basename(inputfile))[0]+"_val_1.fq"
+            , None)
 
     return (outputdir + os.path.splitext(os.path.basename(inputfile))[0]+"_val_1.fq"
         , outputdir + os.path.splitext(os.path.basename(inputfile2))[0]+"_val_2.fq")
@@ -64,17 +81,25 @@ def align_w_subread(read1, read2, reference, outputdir, verbose=False
         #first build indices for subread program
         check_call(index_cmd, shell=True)
 
-
-
-    align_cmd = (scriptPath
-        + "subread-align "
-        + " -d 50"
-        + " -D 600"
-        + " -T 5"
-        + " -i " + index
-        + " -r " + read1
-        + " -R " + read2
-        + " -o " + outputdir + "alignment.sam")
+    if read2==None:
+        align_cmd = (scriptPath
+            + "subread-align "
+            + " -d 50"
+            + " -D 600"
+            + " -T 5"
+            + " -i " + index
+            + " -r " + read1
+            + " -o " + outputdir + "alignment.sam")
+    else:
+        align_cmd = (scriptPath
+            + "subread-align "
+            + " -d 50"
+            + " -D 600"
+            + " -T 5"
+            + " -i " + index
+            + " -r " + read1
+            + " -R " + read2
+            + " -o " + outputdir + "alignment.sam")
 
     if phred:
         align_cmd = align_cmd + " --phred " + str(phred)
@@ -357,7 +382,7 @@ def run_blast(reference, query_contigs, outdir, verbose=False):
 
     return output
 
-def  digi_norm(single, paired, outputdir, verbose=False):
+def digi_norm(single, paired, outputdir, verbose=False):
     scriptPath = getScriptPath()
     script = "python " + scriptPath + "/third-party/khmer/scripts/normalize-by-median.py"
 
@@ -368,6 +393,9 @@ def  digi_norm(single, paired, outputdir, verbose=False):
     if verbose:
         print norm_cmd
     check_call(norm_cmd, shell=True)
+
+    if (os.stat(paired).st_size == 0) or (read2==None):#check if single assembly
+        return outputdir + "normalised_single.fq", None
 
     norm_cmd = (script
         + " -C 20 -k 20 -N 4 -x 2e9"
@@ -382,6 +410,9 @@ def  digi_norm(single, paired, outputdir, verbose=False):
 
 
 def combine_paired(read1, read2, outputdir, verbose=False):
+    if read2==None: #single read assembly
+        return read1, read2
+
     #function if we skip the alignment step.
     scriptPath = getScriptPath()
     script = "python " + scriptPath + "/third-party/khmer/scripts/interleave-reads.py"
