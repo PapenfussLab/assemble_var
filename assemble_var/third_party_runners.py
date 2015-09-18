@@ -450,14 +450,6 @@ def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
     os.chdir(outputdir)
 
     scriptPath = getScriptPath()
-    script = "python " + scriptPath + "/third-party/khmer/scripts/split-paired-reads.py"
-    #first split files so PEAR can use them
-    split_cmd = (script
-        + " " + fasta_paired)
-
-    if verbose:
-        print split_cmd
-    check_call(split_cmd, shell=True)
 
     if fasta_paired==None:
         config_str =(
@@ -477,6 +469,15 @@ map_len=32
 #fasta file for single reads
 q=""" + fasta_single)
     else:
+        script = "python " + scriptPath + "/third-party/khmer/scripts/split-paired-reads.py"
+        #first split files so PEAR can use them
+        split_cmd = (script
+            + " " + fasta_paired)
+
+        if verbose:
+            print split_cmd
+        check_call(split_cmd, shell=True)
+
         config_str =(
 """#maximal read length
 max_rd_len=250
