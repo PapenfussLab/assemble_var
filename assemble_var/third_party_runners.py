@@ -404,7 +404,7 @@ def digi_norm(single, paired, outputdir, verbose=False):
         print norm_cmd
     check_call(norm_cmd, shell=True)
 
-    if (os.stat(paired).st_size == 0) or (read2==None):#check if single assembly
+    if (paired==None) or (os.stat(paired).st_size == 0):#check if single assembly
         return outputdir + "normalised_single.fq", None
 
     norm_cmd = (script
