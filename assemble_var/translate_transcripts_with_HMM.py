@@ -3,6 +3,7 @@ from mungo.fasta import FastaReader
 import os, sys
 from optparse import OptionParser
 from subprocess import check_call
+from collections import defaultdict
 
 HMMER3 = "/home/users/allstaff/tonkin-hill.g/rask_based_block_finder2.0/third-party/hmmer-3.1b1/src/hmmsearch"
 
@@ -107,7 +108,7 @@ def searchhmmer(seqfile, hmmfile, bit_threshold, outdir, outname
     else:
         return search_file
 
-def filter_with_HMMER(orfFile, hmmfile, outputdir):
+def filter_with_HMMER(orfFile, hmmfile, hmmThresh, outputdir):
   outname = os.path.splitext(os.path.basename(orfFile))[0]
 
   search_file = searchhmmer(orfFile, hmmfile, 0.1, outputdir, outname,True)
@@ -116,15 +117,22 @@ def filter_with_HMMER(orfFile, hmmfile, outputdir):
     + "_matchedHMMER.fa")
 
   # target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+  head_hits = defaultdict(set)
   with open(search_file, 'r') as searchfile:
     for line in searchfile:
       if line[0]=='#':
         continue
       line = line.strip().split()
-      target = line[0]
-      query = line[3]
+      sequence = line[0]
+      hmmHit = line[3]
 
-      print target, query
+      head_hits[sequence].add(hmmHit)
+
+  with open(output_file, 'w') as outfile:
+    for h,s in FastaReader(orfFile):
+      if len(head_hits[h]) >= hmmThresh:
+        outfile.write(">"+h+"\n")
+        outfile.write(s+"\n")
 
   return output_file
 
@@ -161,6 +169,10 @@ def main():
       , default=130
       , help="length of the shortest contig to be investigated")
 
+  parser.add_option("", "--hmmCountThreshold", dest="hmmThresh", type=int
+      , default=3
+      , help="number of unique HMM matches required to keep the ORF (default=3)")
+
   parser.add_option("-o", "--outputdir", dest="outputdir",
       help=("output directory. This will be created if it doesn't already"
           + " exist."))
@@ -172,7 +184,8 @@ def main():
 
   longORFs = pull_out_long_ORFs(hard, options.length, options.outputdir)
 
-  hmmMatch = filter_with_HMMER(longORFs, options.hmmfile, options.outputdir)
+  hmmMatch = filter_with_HMMER(longORFs, options.hmmfile, options.hmmThresh
+    , options.outputdir)
 
   merge_files(easy, hmmMatch, options.outputdir)
 
