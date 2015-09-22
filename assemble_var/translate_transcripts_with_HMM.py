@@ -2,10 +2,11 @@ from mungo.sequence import sixFrameTranslation
 from mungo.fasta import FastaReader
 import os, sys
 from optparse import OptionParser
+from subprocess import check_call
 
 HMMER3 = "/home/users/allstaff/tonkin-hill.g/rask_based_block_finder2.0/third-party/hmmer-3.1b1/src/hmmsearch"
 
-def split_easy_from_hard(inputfile, ouputdir):
+def split_easy_from_hard(inputfile, outputdir):
   seqCount = 0
   badSeqs = 0
   bad_lengths = []
@@ -13,7 +14,7 @@ def split_easy_from_hard(inputfile, ouputdir):
   output_file = (outputdir + os.path.splitext(os.path.basename(inputfile))[0]
     + "_translatedL2stops.fa")
 
-  with open(output_file + "_BadSeqs") as badfile:
+  with open(output_file + "_BadSeqs", 'w') as badfile:
     with open(output_file, 'w') as outfile:
 
       for h,s in FastaReader(inputfile):
@@ -32,8 +33,8 @@ def split_easy_from_hard(inputfile, ouputdir):
         else:
           badSeqs += 1
           bad_lengths.append(len(s))
-          outfile.write(">" + h + "\n")
-          outfile.write(s + "\n")
+          badfile.write(">" + h + "\n")
+          badfile.write(s + "\n")
 
         seqCount += 1
   print ((100.0*badSeqs)/seqCount, "percent or ",
@@ -51,13 +52,13 @@ def get_long_ORFS(translation, len_cutoff):
         keep.append(("_frm"+str(frame)+"_orf"+str(o_counts), o))
   return keep
 
-def pull_out_long_ORFs(bad_file, ouputdir):
+def pull_out_long_ORFs(bad_file, len_cutoff, outputdir):
 
   out_file = (outputdir + os.path.splitext(os.path.basename(bad_file))[0]
     + "_TranslongORFS.fa")
 
   with open(out_file, 'w') as outfile:
-    for h,s in FastaReader(badfile):
+    for h,s in FastaReader(bad_file):
       translation = sixFrameTranslation(s)
       orfs = get_long_ORFS(translation, len_cutoff)
       for o in orfs:
@@ -106,12 +107,12 @@ def searchhmmer(seqfile, hmmfile, bit_threshold, outdir, outname
     else:
         return search_file
 
-def filter_with_HMMER(orfFile, hmmfile, ouputdir):
-  outname = outputdir + os.path.splitext(os.path.basename(bad_file))[0]
+def filter_with_HMMER(orfFile, hmmfile, outputdir):
+  outname = os.path.splitext(os.path.basename(orfFile))[0]
 
-  search_file = searchhmmer(orfFile, hmmfile, 0.1, ouputdir, outname,True)
+  search_file = searchhmmer(orfFile, hmmfile, 0.1, outputdir, outname,True)
 
-  output_file = (outputdir + os.path.splitext(os.path.basename(inputfile))[0]
+  output_file = (outputdir + os.path.splitext(os.path.basename(orfFile))[0]
     + "_matchedHMMER.fa")
 
   # target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
@@ -169,7 +170,7 @@ def main():
   easy, hard = split_easy_from_hard(options.contig_file
     , options.outputdir)
 
-  longORFs = pull_out_long_ORFs(hard, options.outputdir)
+  longORFs = pull_out_long_ORFs(hard, options.length, options.outputdir)
 
   hmmMatch = filter_with_HMMER(longORFs, options.hmmfile, options.outputdir)
 
