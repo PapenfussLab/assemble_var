@@ -106,7 +106,7 @@ def searchhmmer(seqfile, hmmfile, bit_threshold, outdir, outname
     else:
         return search_file
 
-def filter_with_HMMER(orfFile, ouputdir):
+def filter_with_HMMER(orfFile, hmmfile, ouputdir):
   outname = outputdir + os.path.splitext(os.path.basename(bad_file))[0]
 
   search_file = searchhmmer(orfFile, hmmfile, 0.1, ouputdir, outname,True)
@@ -153,6 +153,9 @@ def main():
   parser.add_option("-c", "--contig", dest="contig_file",
       help="contig file of contigs to be translated")
 
+  parser.add_option("", "--hmm", dest="hmmfile",
+      help="hmmfile file of Rask block HMMs to be searched")
+
   parser.add_option("-l", "--lengthThreshold", dest="length", type=int
       , default=130
       , help="length of the shortest contig to be investigated")
@@ -168,7 +171,7 @@ def main():
 
   longORFs = pull_out_long_ORFs(hard, options.outputdir)
 
-  hmmMatch = filter_with_HMMER(longORFs, options.outputdir)
+  hmmMatch = filter_with_HMMER(longORFs, options.hmmfile, options.outputdir)
 
   merge_files(easy, hmmMatch, options.outputdir)
 
