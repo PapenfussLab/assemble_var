@@ -38,8 +38,8 @@ def split_easy_from_hard(inputfile, outputdir):
           badfile.write(s + "\n")
 
         seqCount += 1
-  print ((100.0*badSeqs)/seqCount, "percent or ",
-    badSeqs, " out of ", seqCount, " were not translated.")
+  print (str((100.0*badSeqs)/seqCount) + "percent or "
+    + str(badSeqs) + " out of " + str(seqCount) + " were not translated.")
 
   return output_file, output_file + "_BadSeqs"
 
@@ -51,6 +51,8 @@ def get_long_ORFS(translation, len_cutoff):
     for o in orfs:
       if len(o) >= len_cutoff:
         keep.append(("_frm"+str(frame)+"_orf"+str(o_counts), o))
+      o_counts += 1
+
   return keep
 
 def pull_out_long_ORFs(bad_file, len_cutoff, outputdir):
@@ -58,13 +60,19 @@ def pull_out_long_ORFs(bad_file, len_cutoff, outputdir):
   out_file = (outputdir + os.path.splitext(os.path.basename(bad_file))[0]
     + "_TranslongORFS.fa")
 
+  num_seqs = 0
+  num_orfs = 0
   with open(out_file, 'w') as outfile:
     for h,s in FastaReader(bad_file):
+      num_seqs += 1
       translation = sixFrameTranslation(s)
       orfs = get_long_ORFS(translation, len_cutoff)
       for o in orfs:
+        num_orfs += 1
         outfile.write(">" + h + o[0] + "\n")
         outfile.write(o[1] + "\n")
+
+  print str(num_seqs) + " sequences translated into " + str(num_orfs) + " ORFs"
 
   return out_file
 
@@ -128,11 +136,17 @@ def filter_with_HMMER(orfFile, hmmfile, hmmThresh, outputdir):
 
       head_hits[sequence].add(hmmHit)
 
+  num_orfs = 0
+  num_keep = 0
   with open(output_file, 'w') as outfile:
     for h,s in FastaReader(orfFile):
+      num_orfs += 1
       if len(head_hits[h]) >= hmmThresh:
         outfile.write(">"+h+"\n")
         outfile.write(s+"\n")
+        num_keep += 1
+
+  print str(num_keep) + " orfs kept out of " + str(num_orfs)
 
   return output_file
 
