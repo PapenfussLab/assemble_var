@@ -119,7 +119,7 @@ def searchhmmer(seqfile, hmmfile, bit_threshold, outdir, outname
 def filter_with_HMMER(orfFile, hmmfile, hmmThresh, outputdir):
   outname = os.path.splitext(os.path.basename(orfFile))[0]
 
-  search_file = searchhmmer(orfFile, hmmfile, 0.1, outputdir, outname,True)
+  search_file = searchhmmer(orfFile, hmmfile, 9.97, outputdir, outname,True)
 
   output_file = (outputdir + os.path.splitext(os.path.basename(orfFile))[0]
     + "_matchedHMMER.fa")
