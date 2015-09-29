@@ -468,6 +468,33 @@ asm_flags=3
 map_len=32
 #fasta file for single reads
 q=""" + fasta_single)
+    elif (fasta_single==None) or (os.stat(fasta_single).st_size == 0):#check if single assembly
+        script = "python " + scriptPath + "/third-party/khmer/scripts/split-paired-reads.py"
+        #first split files so PEAR can use them
+        split_cmd = (script
+            + " " + fasta_paired)
+
+        if verbose:
+            print split_cmd
+        check_call(split_cmd, shell=True)
+
+        config_str =(
+"""#maximal read length
+max_rd_len=250
+[LIB]
+#maximal read length in this lib
+rd_len_cutof=250
+#average insert size
+avg_ins=0
+#if sequence needs to be reversed
+reverse_seq=0
+#in which part(s) the reads are used
+asm_flags=3
+#minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)
+map_len=32
+#fasta file for single reads
+q1=""" + fasta_paired + ".1\n"
++ "q2=" + fasta_paired + ".2")
     else:
         script = "python " + scriptPath + "/third-party/khmer/scripts/split-paired-reads.py"
         #first split files so PEAR can use them
