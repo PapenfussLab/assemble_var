@@ -39,7 +39,7 @@ standardCodonTable = {
     'GCT': 'A', 'GCC': 'A', 'GCA': 'A', 'GCG': 'A',
     'GAT': 'D', 'GAC': 'D', 'GAA': 'E', 'GAG': 'E',
     'GGT': 'G', 'GGC': 'G', 'GGA': 'G', 'GGG': 'G',
-    'NNN': 'X',                 
+    'NNN': 'X',
     'ttt': 'F', 'ttc': 'F', 'tta': 'L', 'ttg': 'L',
     'tct': 'S', 'tcc': 'S', 'tca': 'S', 'tcg': 'S',
     'tat': 'Y', 'tac': 'Y', 'taa': '*', 'tag': '*',
@@ -196,7 +196,7 @@ def codonIterator(s, remainder=False):
         elif L-i==0:
             return
         i += 3
-    
+
     if remainder:
         yield s[i:]
 
@@ -218,7 +218,7 @@ def translate(s, codonTable=standardCodonTable, remainder=False, frame=0):
 
 def sixFrameTranslationIter(s, codonTable=standardCodonTable):
     """Returns a 6 frame translation iterator.
-    
+
     @param s: DNA sequence
     @param codonTable: Codon translation table (default=standardCodonTable)
     @return: Iterator yielding (frame, translation)
@@ -226,7 +226,7 @@ def sixFrameTranslationIter(s, codonTable=standardCodonTable):
     # First 3 frames
     for frame in xrange(3):
         yield frame+1, translate(s[frame:])
-    
+
     # Reverse strand
     s2 = reverseComplement(s)
     for frame in xrange(3):
@@ -253,13 +253,13 @@ def extractOrfsIter(seq, minLen=20, pattern='\*|X{200,}', verbose=False):
     """
     L = len(seq)
     regex = re.compile(pattern)
-    
+
     i = 0
     sixFrameIter = sixFrameTranslationIter(seq)
     for frame,p in sixFrameIter:
         if verbose: print frame
         matchIter = regex.finditer(p)
-        
+
         # As though there is a stop to the left of 0
         start = -1
         for match in matchIter:
@@ -270,7 +270,7 @@ def extractOrfsIter(seq, minLen=20, pattern='\*|X{200,}', verbose=False):
                 gStart,gEnd = hmmer.convertSixFrameToGenomic(start+2, end, frame, L)
                 yield i, gStart, gEnd, orf
             start = copy.copy(end)
-        
+
         # As though there is a stop to the right of len(p)-1
         end = len(p)
         orf = p[start+1:end]
@@ -282,7 +282,7 @@ def extractOrfsIter(seq, minLen=20, pattern='\*|X{200,}', verbose=False):
 
 def extractOrfs(seq, baseHeader='', minLen=20, pattern='\*|X{200,}'):
     """Returns all ORFs >minLen from a sequence.
-    
+
     @param seq: DNA sequence
     @param baseHeader: Base name for header (default='')
     @param minLen: Minimum ORF length (default=20)
@@ -301,13 +301,13 @@ def extractOrfs(seq, baseHeader='', minLen=20, pattern='\*|X{200,}'):
 def calcFrequency(seq, alphabet=aminoAcids):
     freq = {}
     for symbol in alphabet: freq[symbol] = 0
-    for symbol in seq: 
+    for symbol in seq:
         _symbol = symbol.upper()
         try:
             freq[_symbol] += 1
         except:
             pass
-    
+
     total = float(sum(freq.values()))
     for symbol in alphabet: freq[symbol] /= total
     return freq

@@ -55,7 +55,7 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
     check_call(trim_cmd, shell=True)
 
     if inputfile2==None:
-        return (outputdir + os.path.splitext(os.path.basename(inputfile))[0]+"_val_1.fq"
+        return (outputdir + os.path.splitext(os.path.basename(inputfile))[0]+"_trimmed.fq"
             , None)
 
     return (outputdir + os.path.splitext(os.path.basename(inputfile))[0]+"_val_1.fq"
