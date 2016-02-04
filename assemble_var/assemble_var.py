@@ -54,6 +54,9 @@ def build(options):
         single_reads, paired_reads = thrd.digi_norm(single_reads
             , paired_reads, outputdir, options.verbose)
 
+    if options.read2 == None:
+        paired_reads=None
+
     #if requested assemble with soapdenovo-trans
     if options.soap:
         transcript_file_61 = thrd.assemble_paired_reads_soapDeNovoTrans(single_reads, paired_reads
