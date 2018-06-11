@@ -48,6 +48,6 @@ Options:
 #### Usage Example
 
 ```python
-python assemble_var.py -r /path/to/read1.fastq -R /path/to/read2.fastq --reference /path/to/reference.fasta -v /path/to/Pvivax_VAR.gff -v /path/to/Pfalciparum_VAR.gff -o /path/to/output_directory/ --norm
+python assemble_var.py -r /path/to/read1.fastq -R /path/to/read2.fastq --reference /path/to/reference.fasta -v /path/to/Pfalciparum_VAR.gff -o /path/to/output_directory/ --norm
 ```
 ```
