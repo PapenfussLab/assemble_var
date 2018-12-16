@@ -449,7 +449,7 @@ def assemble_paired_reads_soapDeNovoTrans(fasta_single, fasta_paired, outputdir
     curr_dir = os.getcwd()
     os.chdir(outputdir)
 
-    if !ins_length:
+    if (!ins_length):
         ins_length=0
 
     scriptPath = getScriptPath()
