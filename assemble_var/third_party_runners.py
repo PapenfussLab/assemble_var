@@ -25,6 +25,7 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
         trim_cmd = (scriptPath
             + "/third-party/trim_galore/trim_galore "
             + " --phred33 "
+            + " --length 50 "
             + " --dont_gzip")
 
         # if adapter:
@@ -39,6 +40,7 @@ def trim_galore(inputfile, inputfile2, outputdir, adapter, verbose=False):
             + "/third-party/trim_galore/trim_galore "
             + " --phred33 "
             + " --paired "
+            + " --length 50 "
             + " --dont_gzip")
 
         # if adapter:
